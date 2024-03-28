@@ -7,9 +7,12 @@ export const getUsers = createAsyncThunk('users/getUsers', async () => {
 });
 
 export const postUser = createAsyncThunk('users/postUser', async (userData) => {
-    const response = await axios.post('YOUR_BACKEND_ENDPOINT', userData);
+    console.log("res ", userData);
+    const response = await axios.post('http://localhost:5000/users', userData);
+
     return response.data;
 });
+
 
 const initialState = {
     data: [

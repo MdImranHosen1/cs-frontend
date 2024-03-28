@@ -28,10 +28,12 @@ export const UserFrom = () => {
     const userData = {
       userName: name,
       userPassword: password,
-      userType,
+      userType: userType,
+      userRoles: [],
       userPhone: phone,
       userEmail: email,
     };
+    // console.log(userData);
 
     dispatch(postUser(userData));
 
@@ -44,7 +46,7 @@ export const UserFrom = () => {
   };
 
   return (
-    <div className="scroll-mx-80">
+    <div>
       <Button
         variant="contained"
         className="w-full"
@@ -54,7 +56,7 @@ export const UserFrom = () => {
       </Button>
 
       {viewUserModel && (
-        <div className="fixed top-0 right-0 bottom-0 left-0 z-50 flex justify-center items-center bg-gray-800 bg-opacity-50">
+        <div className=" fixed top-0 right-0 bottom-0 left-0 z-100 flex justify-center items-center bg-gray-800 bg-opacity-50">
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-gray-900">
