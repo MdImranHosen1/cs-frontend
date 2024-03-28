@@ -7,12 +7,10 @@ export const HomePage = () => {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Box >
-        <img
-          src={dhaka}
-          alt="Dhaka"
-          style={{ width: "100vw", height: "auto" }}
-        />
+      <Box>
+        <div className=" h-screen bg-slate-300">
+          <img className=" h-screen w-screen" src={dhaka} alt="Dhaka" />
+        </div>
       </Box>
     </React.Fragment>
   );

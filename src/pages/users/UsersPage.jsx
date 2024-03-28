@@ -1,7 +1,7 @@
 import * as React from "react";
-
 import InteractiveCard from "./InteractiveCard";
 import { Box, Button, TextField } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export const UsersPage = () => {
   const Items = Array.from({ length: 12 }, (_, index) => index);
@@ -99,9 +99,11 @@ export const UsersPage = () => {
 
         <div style={{ width: "70%" }}>
           {Items.map((item, index) => (
-            <Box>
-              <InteractiveCard />
-            </Box>
+            <Link to={`/users/${index}`} style={{ textDecoration: "none" }}>
+              <Box>
+                <InteractiveCard />
+              </Box>
+            </Link>
           ))}
         </div>
       </Box>

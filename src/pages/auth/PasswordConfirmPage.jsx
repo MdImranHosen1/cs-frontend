@@ -3,19 +3,15 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
-export const LoginPage = () => {
+export const PasswordConfirmPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -41,7 +37,7 @@ export const LoginPage = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Passoword reset page
           </Typography>
           <Box
             component="form"
@@ -64,14 +60,20 @@ export const LoginPage = () => {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="New password"
               type="password"
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="New password again"
+              type="password"
+              id="password"
+              autoComplete="current-password"
             />
             <Button
               type="submit"
@@ -79,20 +81,8 @@ export const LoginPage = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Password confirmed
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link
-                  to="/auth/change-password"
-                  variant="body2"
-                  className=" hover:text-blue-600 text-purple-600
-                  hover:underline"
-                >
-                  Forgot password?
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
       </Container>
