@@ -10,6 +10,7 @@ import { PasswordChangePage } from './pages/auth/PasswordChangePage';
 import { ProfilePage } from "./pages/profile/ProfilePage";
 import { VehiclesAllPage } from "./pages/vehicles/VehiclesAllPage";
 import { StsPage } from "./pages/sts/StsPage";
+import { StsDetailsPage } from './pages/sts/StsDetailsPage';
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route exact path="/vehicles" element={<VehiclesAllPage />} />
         {/* STS */}
         <Route exact path="/sts" element={<StsPage />} />
+        <Route exact path="/sts/:id" element={<StsDetailsPage />} />
 
 
       </Routes>

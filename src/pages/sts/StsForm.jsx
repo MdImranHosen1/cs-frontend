@@ -1,43 +1,41 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
-import { postUser } from "../../redux/slices/usersSlice";
 import { useDispatch } from "react-redux";
+import { postSts } from "../../redux/slices/stsSlice";
 
 export const StsForm = () => {
-  const [viewUserModel, setViewUserModel] = useState(false);
+  const [viewStsModel, setViewStsModel] = useState(false);
   const dispatch = useDispatch();
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [userType, setUserType] = useState("Unassigned");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
+  const [stsName, setStsName] = useState("");
+  const [wardNum, setWardNum] = useState("");
+  const [capacity, setCapacity] = useState("");
+  const [coordinate, setCoordinate] = useState("");
+  const [managers, setManagers] = useState("");
 
-  const toggleAddUserView = () => {
-    setViewUserModel(!viewUserModel);
+  const toggleAddStsView = () => {
+    setViewStsModel(!viewStsModel);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const userData = {
-      userName: name,
-      userPassword: password,
-      userType: userType,
-      userRoles: [],
-      userPhone: phone,
-      userEmail: email,
+    const stsData = {
+      stsName: stsName,
+      wardNum: wardNum,
+      capacity: capacity,
+      coordinate: coordinate,
+      managers: managers,
     };
-    console.log(userData);
+    console.log(stsData);
 
-    dispatch(postUser(userData));
-    // submitData(userData);
+    dispatch(postSts(stsData));
 
-    setName("");
-    setPassword("");
-    setUserType("Unassigned");
-    setPhone("");
-    setEmail("");
-    toggleAddUserView();
+    setStsName("");
+    setWardNum("");
+    setCapacity("");
+    setCoordinate("");
+    setManagers("");
+    toggleAddStsView();
   };
 
   return (
@@ -46,13 +44,13 @@ export const StsForm = () => {
         <Button
           variant="contained"
           className="w-full"
-          onClick={toggleAddUserView}
+          onClick={toggleAddStsView}
         >
-          Add User
+          Add STS
         </Button>
       </div>
 
-      {viewUserModel && (
+      {viewStsModel && (
         <div className="z-20 fixed top-0 right-0 bottom-0 left-0 z-100 flex justify-center items-center bg-gray-800 bg-opacity-50">
           <div
             style={{
@@ -65,12 +63,12 @@ export const StsForm = () => {
           >
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-gray-900">
-                Add new users
+                Add new STS
               </h3>
               <button
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8"
-                onClick={toggleAddUserView}
+                onClick={toggleAddStsView}
               >
                 <svg
                   className="w-3 h-3"
@@ -94,99 +92,98 @@ export const StsForm = () => {
               <div className="grid gap-4 mb-4 grid-cols-2">
                 <div className="col-span-2">
                   <label
-                    htmlFor="name"
+                    htmlFor="stsName"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Name
+                    STS Name
                   </label>
                   <input
                     type="text"
-                    name="name"
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    name="stsName"
+                    id="stsName"
+                    value={stsName}
+                    onChange={(e) => setStsName(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Type user name"
+                    placeholder="Type STS name"
                     required
                   />
                 </div>
                 <div className="col-span-2">
                   <label
-                    htmlFor="password"
+                    htmlFor="wardNum"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Password
+                    Ward Number
                   </label>
                   <input
                     type="text"
-                    name="password"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    name="wardNum"
+                    id="wardNum"
+                    value={wardNum}
+                    onChange={(e) => setWardNum(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Type user password"
+                    placeholder="Type ward number"
+                    required
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label
+                    htmlFor="capacity"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
+                    STS Capacity
+                  </label>
+                  <input
+                    type="text"
+                    name="capacity"
+                    id="capacity"
+                    value={capacity}
+                    onChange={(e) => setCapacity(e.target.value)}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                    placeholder="Type STS capacity"
+                    required
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label
+                    htmlFor="coordinate"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
+                    STS Coordinate
+                  </label>
+                  <input
+                    type="text"
+                    name="coordinate"
+                    id="coordinate"
+                    value={coordinate}
+                    onChange={(e) => setCoordinate(e.target.value)}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                    placeholder="Type STS coordinate"
                     required
                   />
                 </div>
 
                 <div className="col-span-2">
                   <label
-                    htmlFor="userType"
+                    htmlFor="managers"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    User type
-                  </label>
-                  <select
-                    id="userType"
-                    name="userType"
-                    value={userType}
-                    onChange={(e) => setUserType(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
-                  >
-                    <option value="Unassigned">Unassigned</option>
-                    <option value="Landfill Manager">Landfill Manager</option>
-                    <option value="STS Manager">STS Manager</option>
-                  </select>
-                </div>
-                <div className="col-span-2">
-                  <label
-                    htmlFor="phone"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Phone number
+                    STS Managers
                   </label>
                   <input
                     type="text"
-                    name="phone"
-                    id="phone"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    name="managers"
+                    id="managers"
+                    value={managers}
+                    onChange={(e) => setManagers(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Type user phone number"
-                    required
-                  />
-                </div>
-                <div className="col-span-2">
-                  <label
-                    htmlFor="email"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Email
-                  </label>
-                  <input
-                    type="text"
-                    name="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Type user Email"
+                    placeholder="Type STS managers"
                     required
                   />
                 </div>
               </div>
               <Button variant="contained" className="w-full" type="submit">
-                Add User
+                Add STS
               </Button>
             </form>
           </div>
