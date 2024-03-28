@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
-
 import { postUser } from "../../redux/slices/usersSlice";
 import { useDispatch } from "react-redux";
 
@@ -17,14 +16,11 @@ export const UserFrom = () => {
     setViewUserModel(!viewUserModel);
   };
 
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    console.log("Name:", name);
-    console.log("Password:", password);
-    console.log("User Type:", userType);
-    console.log("Phone:", phone);
-    console.log("Email:", email);
+    
     const userData = {
       userName: name,
       userPassword: password,
@@ -33,9 +29,10 @@ export const UserFrom = () => {
       userPhone: phone,
       userEmail: email,
     };
-    // console.log(userData);
+    console.log(userData);
 
     dispatch(postUser(userData));
+    // submitData(userData);
 
     setName("");
     setPassword("");

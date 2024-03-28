@@ -3,11 +3,19 @@ import UserCard from "./UserCard";
 
 import { UserFrom } from "./UserFrom";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { getUsers } from "../../redux/slices/usersSlice";
+import { useEffect } from "react";
 
 export const UsersPage = () => {
+  const dispatch = useDispatch();
+
   const data = useSelector((state) => state.users);
   const users = data.data;
   console.log(users);
+  useEffect(() => {
+    dispatch(getUsers());
+  }, [dispatch]);
 
   return (
     <div className="w-screen flex">
