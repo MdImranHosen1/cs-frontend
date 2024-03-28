@@ -1,22 +1,52 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import profileImg from "../../assets/profile1.png";
+import profileImg1 from "./../../assets/user.png";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export const UserDetailsPage = () => {
+  const { userId } = useParams();
+  const [user, setUser] = useState({
+    userId: 1,
+    userType: "Type1",
+    userName: "user1",
+    userPassword: "pass123",
+    userRoles: ["role1", "role2"],
+    userPhone: "1234567890",
+    userEmail: "user1@example.com",
+  });
+
+  // const getUserData=async()=>{
+  //   const response = await axios.get('http://localhost:5000/users');
+  //   setData(response.data);
+  // }
+
+  // useEffect(() => {
+  //   getUserData();
+  //
+
+  // }, []);
+  console.log(user);
+
   return (
     <div className=" flex w-full p-10 h-screen ">
-      <div className="rounded-md w-1/4 p-5 bg-sky-500 h-fit">
-        <img className=" rounded-lg" src={profileImg} alt=""></img>
-        <h1 className=" mt-5 font-semibold text-lg">Name: user name</h1>
-        <p>Email:asdfa@gmail.com</p>
+      <div className="rounded-md w-1/4 p-5 bg-sky-500 h-full">
+        <img className=" rounded-lg" src={profileImg1} alt=""></img>
+        <h1 className=" mt-5 font-semibold text-lg text-center ">
+          Name: {user.userName}
+        </h1>
       </div>
       <div className=" w-3/4 p-5">
-        <h1 className=" font-bold text-2xl">About Me</h1>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum
-          itaque quasi vero unde nostrum, libero voluptatem quisquam ut
-          necessitatibus, reprehenderit impedit corrupti possimus optio
-          voluptate ipsam est facilis hic! Nostrum.
-        </p>
+        <h1 className=" font-bold text-2xl ml-5">About </h1>
+        <div className="p-6  ">
+          <b>
+            <h1 className="mb-1">Name :{user.userName}</h1>
+            <h4 className="mb-1">Type :{user.userType}</h4>
+            <h4 className="mb-1">Phone Number :{user.userPhone}</h4>
+            <h4 className="mb-1">Email : {user.userEmail}</h4>
+            <h4 className="mb-1">Roles :{user.userRoles}</h4>
+          </b>
+        </div>
       </div>
     </div>
   );

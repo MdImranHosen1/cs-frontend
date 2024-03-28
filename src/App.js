@@ -9,6 +9,7 @@ import { PasswordConfirmPage } from "./pages/auth/PasswordConfirmPage";
 import { PasswordChangePage } from './pages/auth/PasswordChangePage';
 import { ProfilePage } from "./pages/profile/ProfilePage";
 import { VehiclesAllPage } from "./pages/vehicles/VehiclesAllPage";
+import { StsPage } from "./pages/sts/StsPage";
 
 
 function App() {
@@ -30,6 +31,9 @@ function App() {
         <Route exact path="/auth/change-password" element={<PasswordChangePage />} />
         {/* Vehicles */}
         <Route exact path="/vehicles" element={<VehiclesAllPage />} />
+        {/* STS */}
+        <Route exact path="/sts" element={<StsPage />} />
+
 
       </Routes>
     </BrowserRouter>

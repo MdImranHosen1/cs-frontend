@@ -12,7 +12,9 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-const pages = ["Products", "Pricing", "Blog"];
+import { Link } from "react-router-dom";
+const pages = ["Users", "Vehicles", "STS", "Landfill"];
+const pagesLink = ["/users", "/vehicles", "/sts", "/landfill"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 export const Navbar = () => {
@@ -36,30 +38,28 @@ export const Navbar = () => {
   };
 
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" style={{ zIndex: 10 }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon
-            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-            href="/"
-          />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            EcoSync
-          </Typography>
+          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <Link to="/">
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              sx={{
+                mr: 2,
+                display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
+              }}
+            >
+              EcoSync
+            </Typography>
+          </Link>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -90,10 +90,12 @@ export const Navbar = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
+              {pages.map((value, index) => (
+                <Link to={pagesLink[index]}>
+                  <MenuItem key={index} onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{value}</Typography>
+                  </MenuItem>
+                </Link>
               ))}
             </Menu>
           </Box>
@@ -117,17 +119,20 @@ export const Navbar = () => {
               textDecoration: "none",
             }}
           >
-            EcoSync
+            <Link to='/'>EcoSync
+            </Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
+            {pages.map((value, index) => (
+              <Link to={pagesLink[index]}>
+                <Button
+                  key={index}
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  {value}
+                </Button>
+              </Link>
             ))}
           </Box>
           {userValid ? (
@@ -167,9 +172,11 @@ export const Navbar = () => {
             </>
           ) : (
             <>
-              <Button href="/auth/login" variant="text" sx={{ color: "white" }}>
-                Login
-              </Button>
+              <Link to="/auth/login">
+                <Button variant="text" sx={{ color: "white" }}>
+                  Login
+                </Button>
+              </Link>
             </>
           )}
         </Toolbar>

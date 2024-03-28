@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 import { postUser } from "../../redux/slices/usersSlice";
 import { useDispatch } from "react-redux";
 
-export const UserFrom = () => {
+export const UserForm = () => {
   const [viewUserModel, setViewUserModel] = useState(false);
   const dispatch = useDispatch();
   const [name, setName] = useState("");
@@ -42,17 +42,27 @@ export const UserFrom = () => {
 
   return (
     <div>
-      <Button
-        variant="contained"
-        className="w-full"
-        onClick={toggleAddUserView}
-      >
-        Add User
-      </Button>
+      <div className="fixed w-1/4 pr-10">
+        <Button
+          variant="contained"
+          className="w-full"
+          onClick={toggleAddUserView}
+        >
+          Add User
+        </Button>
+      </div>
 
       {viewUserModel && (
-        <div className=" fixed top-0 right-0 bottom-0 left-0 z-100 flex justify-center items-center bg-gray-800 bg-opacity-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+        <div className="z-20 fixed top-0 right-0 bottom-0 left-0 z-100 flex justify-center items-center bg-gray-800 bg-opacity-50">
+          <div
+            style={{
+              maxHeight: "calc(100vh - 20px)",
+              overflowY: "auto",
+              width: "80%",
+              maxWidth: "800px",
+            }}
+            className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md"
+          >
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-gray-900">
                 Add new users

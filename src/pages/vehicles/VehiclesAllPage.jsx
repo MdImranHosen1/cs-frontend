@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { VehicleCard } from "./VehicleCard";
 import { useDispatch, useSelector } from "react-redux";
 import { VehiclesForm } from "./VehiclesForm";
+import { getVehicles } from "../../redux/slices/vehiclesSlice";
 
 export const VehiclesAllPage = () => {
   const data = useSelector((state) => state.vehicles);
   const vehicles = data.data;
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getVehicles());
+  }, [dispatch]);
+
 
   return (
     <div className="flex w-full">

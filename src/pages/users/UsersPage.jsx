@@ -1,7 +1,7 @@
 import * as React from "react";
 import UserCard from "./UserCard";
 
-import { UserFrom } from "./UserFrom";
+import { UserForm } from "./UserForm";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { getUsers } from "../../redux/slices/usersSlice";
@@ -20,7 +20,7 @@ export const UsersPage = () => {
   return (
     <div className="w-screen flex">
       <div className=" w-1/4 p-5">
-        <UserFrom />
+        <UserForm />
       </div>
       <div className=" w-3/4 p-5">
         {users.map((value) => {

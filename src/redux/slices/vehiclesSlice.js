@@ -1,9 +1,16 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+
 export const getVehicles = createAsyncThunk('vehicles/getVehicles', async () => {
-    const response = await axios.get('https://jsonplaceholder.typicode.com/users')
-    return response.data
-})
+    const response = await axios.get('http://localhost:5000/vehicles');
+    return response.data;
+});
+
+export const postVehicle = createAsyncThunk('vehicles/postVehicle', async (vehicleData) => {
+    const response = await axios.post('http://localhost:5000/vehicles/', vehicleData);
+
+    return response.data;
+});
 
 const initialState = {
     data: [
@@ -22,28 +29,43 @@ const initialState = {
     loading: 'idle',
     error: null,
 };
+
+
 export const vehiclesSlice = createSlice({
     name: 'vehicles',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(getVehicles.pending, (state, action) => {
-            if (state.loading === 'idle') {
-                state.loading = 'pending'
-            }
-        })
-        builder.addCase(getVehicles.fulfilled, (state, action) => {
-            if (state.loading === 'pending') {
-                state.data = action.payload
-                state.loading = 'idle'
-            }
-        })
-        builder.addCase(getVehicles.rejected, (state, action) => {
-            if (state.loading === 'pending') {
-                state.loading = 'idle'
-                state.error = 'Error occured'
-            }
-        })
+        builder
+            .addCase(getVehicles.pending, (state) => {
+                if (state.loading === 'idle') {
+                    state.loading = 'pending';
+                }
+            })
+            .addCase(getVehicles.fulfilled, (state, action) => {
+                if (state.loading === 'pending') {
+                    state.data = action.payload;
+                    state.loading = 'idle';
+                }
+            })
+            .addCase(getVehicles.rejected, (state) => {
+                if (state.loading === 'pending') {
+                    state.loading = 'idle';
+                    state.error = 'Error occurred';
+                }
+            })
+            .addCase(postVehicle.pending, (state) => {
+                state.loading = 'pending';
+            })
+            .addCase(postVehicle.fulfilled, (state, action) => {
+                state.data.push(action.payload);
+                state.loading = 'idle';
+            })
+            .addCase(postVehicle.rejected, (state) => {
+                state.loading = 'idle';
+                state.error = 'Error occurred while adding vehicls';
+            });
     },
-})
-export default vehiclesSlice.reducer
+});
+
+export default vehiclesSlice.reducer;

@@ -1,44 +1,43 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
+import { postUser } from "../../redux/slices/usersSlice";
 import { useDispatch } from "react-redux";
-import { postVehicle } from "../../redux/slices/vehiclesSlice";
 
-export const VehiclesForm = () => {
+export const StsForm = () => {
   const [viewUserModel, setViewUserModel] = useState(false);
   const dispatch = useDispatch();
-  const [regNum, setRegNum] = useState("");
-  const [type, setType] = useState("Open Truck");
-  const [capacity, setCapacity] = useState("3 ton");
-  const [costLoaded, setCostLoaded] = useState("");
-  const [costUnloaded, setCostUnloaded] = useState("");
-  const [stsNum, setStsNum] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [userType, setUserType] = useState("Unassigned");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
 
   const toggleAddUserView = () => {
-    document.body.style.overflow = viewUserModel ? "auto" : "hidden";
     setViewUserModel(!viewUserModel);
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const vehicleData = {
-      regNum: regNum,
-      type: type,
-      capacity: capacity,
-      costLoaded: costLoaded,
-      costUnloaded: costUnloaded,
-      stsId: stsNum,
+    const userData = {
+      userName: name,
+      userPassword: password,
+      userType: userType,
+      userRoles: [],
+      userPhone: phone,
+      userEmail: email,
     };
+    console.log(userData);
 
-    console.log(vehicleData);
-    dispatch(postVehicle(vehicleData));
+    dispatch(postUser(userData));
+    // submitData(userData);
 
-    // setRegNum("");
-    // setType("Open Truck");
-    // setCapacity("3 ton");
-    // setCostLoaded("");
-    // setCostUnloaded("");
-    // setStsNum("");
-    // toggleAddUserView();
+    setName("");
+    setPassword("");
+    setUserType("Unassigned");
+    setPhone("");
+    setEmail("");
+    toggleAddUserView();
   };
 
   return (
@@ -49,12 +48,12 @@ export const VehiclesForm = () => {
           className="w-full"
           onClick={toggleAddUserView}
         >
-          Add Vehicle
+          Add User
         </Button>
       </div>
 
       {viewUserModel && (
-        <div className="z-20  fixed top-0 right-0 bottom-0 left-0 z-100 flex justify-center items-center bg-gray-800 bg-opacity-50">
+        <div className="z-20 fixed top-0 right-0 bottom-0 left-0 z-100 flex justify-center items-center bg-gray-800 bg-opacity-50">
           <div
             style={{
               maxHeight: "calc(100vh - 20px)",
@@ -62,11 +61,11 @@ export const VehiclesForm = () => {
               width: "80%",
               maxWidth: "800px",
             }}
-            className=" bg-white rounded-lg shadow-lg p-6 max-h-full overflow-y-auto "
+            className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md"
           >
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-gray-900">
-                Add new vehicle
+                Add new users
               </h3>
               <button
                 type="button"
@@ -95,120 +94,99 @@ export const VehiclesForm = () => {
               <div className="grid gap-4 mb-4 grid-cols-2">
                 <div className="col-span-2">
                   <label
-                    htmlFor="regNum"
+                    htmlFor="name"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Registration Id
+                    Name
                   </label>
                   <input
                     type="text"
-                    name="regNum"
-                    id="regNum"
-                    value={regNum}
-                    onChange={(e) => setRegNum(e.target.value)}
+                    name="name"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Type vehicles registratin id"
+                    placeholder="Type user name"
                     required
                   />
                 </div>
                 <div className="col-span-2">
                   <label
-                    htmlFor="type"
+                    htmlFor="password"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Vehicles type
-                  </label>
-                  <select
-                    id="type"
-                    name="type"
-                    value={type}
-                    onChange={(e) => setType(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
-                  >
-                    <option value="Open Truck">Open Truck</option>
-                    <option value="Dump Truck">Dump Truck</option>
-                    <option value="Compactor">Compactor</option>
-                    <option value="Container Carrier">Container Carrier</option>
-                  </select>
-                </div>
-                <div className="col-span-2">
-                  <label
-                    htmlFor="capacity"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Vehicles capacity
-                  </label>
-                  <select
-                    id="capacity"
-                    name="capacity"
-                    value={capacity}
-                    onChange={(e) => setCapacity(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
-                  >
-                    <option value="3"> 3 ton</option>
-                    <option value="5">5 ton</option>
-                    <option value="7">7 ton</option>
-                  </select>
-                </div>
-
-                <div className="col-span-2">
-                  <label
-                    htmlFor="costLoaded"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Fuel cost per kilometer - fully loaded
+                    Password
                   </label>
                   <input
-                    type="number"
-                    name="costLoaded"
-                    id="costLoaded"
-                    value={costLoaded}
-                    onChange={(e) => setCostLoaded(e.target.value)}
+                    type="text"
+                    name="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Fuel cost per kilometer - fully loaded"
-                    required
-                  />
-                </div>
-                <div className="col-span-2">
-                  <label
-                    htmlFor="costUnloaded"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Fuel cost per kilometer - unloaded
-                  </label>
-                  <input
-                    type="number"
-                    name="costUnloaded"
-                    id="costUnloaded"
-                    value={costUnloaded}
-                    onChange={(e) => setCostUnloaded(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Fuel cost per kilometer - unloaded"
+                    placeholder="Type user password"
                     required
                   />
                 </div>
 
                 <div className="col-span-2">
                   <label
-                    htmlFor="stsNum"
+                    htmlFor="userType"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    STS number
+                    User type
+                  </label>
+                  <select
+                    id="userType"
+                    name="userType"
+                    value={userType}
+                    onChange={(e) => setUserType(e.target.value)}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                  >
+                    <option value="Unassigned">Unassigned</option>
+                    <option value="Landfill Manager">Landfill Manager</option>
+                    <option value="STS Manager">STS Manager</option>
+                  </select>
+                </div>
+                <div className="col-span-2">
+                  <label
+                    htmlFor="phone"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
+                    Phone number
                   </label>
                   <input
                     type="text"
-                    name="stsNum"
-                    id="stsNum"
-                    value={stsNum}
-                    onChange={(e) => setStsNum(e.target.value)}
+                    name="phone"
+                    id="phone"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Enter the STS number of the vehicle"
+                    placeholder="Type user phone number"
+                    required
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label
+                    htmlFor="email"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
+                    Email
+                  </label>
+                  <input
+                    type="text"
+                    name="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                    placeholder="Type user Email"
                     required
                   />
                 </div>
               </div>
               <Button variant="contained" className="w-full" type="submit">
-                Add Vehicles
+                Add User
               </Button>
             </form>
           </div>
