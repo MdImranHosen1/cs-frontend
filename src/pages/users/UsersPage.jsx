@@ -1,12 +1,13 @@
 import * as React from "react";
-
-import { Link } from "react-router-dom";
 import UserCard from "./UserCard";
 
 import { UserFrom } from "./UserFrom";
+import { useSelector } from "react-redux";
 
 export const UsersPage = () => {
-  const Items = Array.from({ length: 12 }, (_, index) => index);
+  const data = useSelector((state) => state.users);
+  const users = data.data;
+  console.log(users);
 
   return (
     <div className="w-screen flex">
@@ -15,13 +16,9 @@ export const UsersPage = () => {
       </div>
       <div className=" w-3/4 p-5">
         <div className=" w-full mb-5">
-          <UserCard></UserCard>
-        </div>
-        <div className=" w-full mb-5">
-          <UserCard></UserCard>
-        </div>
-        <div className=" w-full mb-5">
-          <UserCard></UserCard>
+          {users.map((value) => {
+            return <UserCard users={value} />;
+          })}
         </div>
       </div>
     </div>

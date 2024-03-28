@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
 
+import { postUser } from "../../redux/slices/usersSlice";
+import { useDispatch } from "react-redux";
+
 export const UserFrom = () => {
   const [viewUserModel, setViewUserModel] = useState(false);
+  const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [userType, setUserType] = useState("Unassigned");
@@ -21,6 +25,15 @@ export const UserFrom = () => {
     console.log("User Type:", userType);
     console.log("Phone:", phone);
     console.log("Email:", email);
+    const userData = {
+      userName: name,
+      userPassword: password,
+      userType,
+      userPhone: phone,
+      userEmail: email,
+    };
+
+    dispatch(postUser(userData));
 
     setName("");
     setPassword("");
