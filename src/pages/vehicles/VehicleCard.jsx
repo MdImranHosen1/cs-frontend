@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export const VehicleCard = () => {
+export const VehicleCard = ({ vehicles }) => {
+  console.log(vehicles);
   return (
     <div class="max-w-sm p-6 bg-white border border-gray-300 rounded-lg shadow">
       <Link to="#">
@@ -37,5 +38,3 @@ export const VehicleCard = () => {
     </div>
   );
 };
-
-
