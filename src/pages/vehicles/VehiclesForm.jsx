@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 import { postUser } from "../../redux/slices/usersSlice";
 import { useDispatch } from "react-redux";
 
-export const UserFrom = () => {
+export const VehiclesForm = () => {
   const [viewUserModel, setViewUserModel] = useState(false);
   const dispatch = useDispatch();
   const [name, setName] = useState("");
@@ -47,7 +47,7 @@ export const UserFrom = () => {
         className="w-full"
         onClick={toggleAddUserView}
       >
-        Add User
+        Add Vehicle
       </Button>
 
       {viewUserModel && (
@@ -55,7 +55,7 @@ export const UserFrom = () => {
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-gray-900">
-                Add new users
+                Add new vehicle
               </h3>
               <button
                 type="button"

@@ -1,40 +1,28 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from "./../../assets/truckDriver.png";
 
 export const VehicleCard = ({ vehicles }) => {
   console.log(vehicles);
   return (
-    <div class="max-w-sm p-6 bg-white border border-gray-300 rounded-lg shadow">
-      <Link to="#">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">
-          Noteworthy technology acquisitions 2021
-        </h5>
-      </Link>
-      <p class="mb-3 font-normal text-gray-700 ">
-        Here are the biggest enterprise technology acquisitions of 2021 so far,
-        in reverse chronological order.
-      </p>
-      <Link
-        to="#"
-        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 "
-      >
-        Read more
-        <svg
-          class="rtl:rotate-180 w-3.5 h-3.5 ms-2"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 14 10"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M1 5h12m0 0L9 1m4 4L9 9"
-          />
-        </svg>
-      </Link>
+    <div class="  flex  items-center w-full  bg-white border border-gray-200 rounded-lg shadow   hover:bg-gray-200">
+      <img
+        class="ml-5 mr-5 rounded-md object-cover  rounded-t-lg h-40 w-40"
+        src={logo}
+        alt="logo"
+      />
+      <div class="flex flex-col justify-between leading-normal">
+        <div className="p-6  ">
+          <b>
+            <h1 className="mb-1">Name :John Doe</h1>
+            <h4 className="mb-1">Type :Dump Truck</h4>
+            <h4 className="mb-1">Registration Number :15451541</h4>
+            <h4 className="mb-1">Capacity : 3 Ton</h4>
+            <h4 className="mb-1">Fuel cost fully loaded :3 Liter</h4>
+            <h4 className="mb-1"> Fuel cost unloaded :2 Liter</h4>
+          </b>
+        </div>
+      </div>
     </div>
   );
 };

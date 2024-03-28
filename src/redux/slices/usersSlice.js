@@ -15,8 +15,7 @@ export const postUser = createAsyncThunk('users/postUser', async (userData) => {
 
 
 const initialState = {
-    data: []
-    ,
+    data: [],
     loading: 'idle',
     error: null,
 };
@@ -48,7 +47,7 @@ export const usersSlice = createSlice({
                 state.loading = 'pending';
             })
             .addCase(postUser.fulfilled, (state, action) => {
-                state.data.push(action.payload); // Assuming the response contains the newly added user data
+                state.data.push(action.payload); 
                 state.loading = 'idle';
             })
             .addCase(postUser.rejected, (state) => {
