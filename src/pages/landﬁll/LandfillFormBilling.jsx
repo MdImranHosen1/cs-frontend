@@ -3,50 +3,62 @@ import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { postVehicle } from "../../redux/slices/vehiclesSlice";
 import UpdateIcon from "@mui/icons-material/Update";
-import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
+import NoteAddIcon from "@mui/icons-material/NoteAdd";
 
-export const VehiclesForm = ({ update = 0, vehicle = {} }) => {
+export const LandfillFormBilling = ({ update = 0, vehicle = {} }) => {
   const [viewUserModel, setViewUserModel] = useState(false);
-  
   const dispatch = useDispatch();
+
+  // State variables for form fields
   const [regNum, setRegNum] = useState("");
   const [type, setType] = useState("Open Truck");
-  const [capacity, setCapacity] = useState("3 ton");
-  const [costLoaded, setCostLoaded] = useState("");
-  const [costUnloaded, setCostUnloaded] = useState("");
-  const [stsNum, setStsNum] = useState("");
+  const [lfId, setLfId] = useState("1"); // Default value for Landfill number
+  const [weightWaste, setWeightWaste] = useState("");
+  const [arrival, setArrival] = useState("");
+  const [departure, setDeparture] = useState("");
+  const [dateTime, setDateTime] = useState("");
+  const [travelRoute, setTravelRoute] = useState("Route number -1"); // Default value for Travel route
 
   const toggleAddUserView = () => {
     document.body.style.overflow = viewUserModel ? "auto" : "hidden";
     setViewUserModel(!viewUserModel);
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const vehicleData = {
-      regNum: regNum,
-      type: type,
-      capacity: capacity,
-      costLoaded: costLoaded,
-      costUnloaded: costUnloaded,
-      stsId: stsNum,
+      vRegNum: regNum,
+      stsId: "10", // Default value for stsId obtained from another table
+      lfId: lfId,
+      weightWaste: weightWaste,
+      arrival: arrival,
+      departure: departure,
+      dateTime: dateTime,
+      ctTotalService: "10", // Default value for ctTotalService obtained from another table
+      travelDistance: "10", // Default value for travelDistance obtained from another table
+      travelRoute: travelRoute,
     };
 
     console.log(vehicleData);
     dispatch(postVehicle(vehicleData));
 
+    // Reset form fields
     setRegNum("");
     setType("Open Truck");
-    setCapacity("3 ton");
-    setCostLoaded("");
-    setCostUnloaded("");
-    setStsNum("");
+    setLfId("1");
+    setWeightWaste("");
+    setArrival("");
+    setDeparture("");
+    setDateTime("");
+    setTravelRoute("Route number -1");
+
     toggleAddUserView();
   };
 
   return (
     <div>
-      <div className="fixed w-1/4 pr-10">
+      <div className="fixed w-1/4 ">
         {update ? (
           <Button
             variant="contained"
@@ -59,11 +71,10 @@ export const VehiclesForm = ({ update = 0, vehicle = {} }) => {
         ) : (
           <Button
             variant="contained"
-            className="w-full"
-            startIcon={<PersonAddAlt1OutlinedIcon />}
+            startIcon={<NoteAddIcon />}
             onClick={toggleAddUserView}
           >
-            Add Vehicle
+            Billing
           </Button>
         )}
       </div>
@@ -81,7 +92,7 @@ export const VehiclesForm = ({ update = 0, vehicle = {} }) => {
           >
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-gray-900">
-                Add new vehicle
+                Add new Bill
               </h3>
               <button
                 type="button"
@@ -113,117 +124,123 @@ export const VehiclesForm = ({ update = 0, vehicle = {} }) => {
                     htmlFor="regNum"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Registration Id
+                    STS Transaction number
                   </label>
                   <input
                     type="text"
-                    name="regNum"
                     id="regNum"
                     value={regNum}
                     onChange={(e) => setRegNum(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Type vehicles registratin id"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                    placeholder="Enter vehicle registration number"
                     required
                   />
                 </div>
                 <div className="col-span-2">
                   <label
-                    htmlFor="type"
+                    htmlFor="lfId"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Vehicles type
+                    Landfill number
                   </label>
                   <select
-                    id="type"
-                    name="type"
-                    value={type}
-                    onChange={(e) => setType(e.target.value)}
+                    id="lfId"
+                    value={lfId}
+                    onChange={(e) => setLfId(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                   >
-                    <option value="Open Truck">Open Truck</option>
-                    <option value="Dump Truck">Dump Truck</option>
-                    <option value="Compactor">Compactor</option>
-                    <option value="Container Carrier">Container Carrier</option>
+                    <option value="1">Amin bajar</option>
+                    <option value="2">Boro bajar</option>
                   </select>
                 </div>
                 <div className="col-span-2">
                   <label
-                    htmlFor="capacity"
+                    htmlFor="weightWaste"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Vehicles capacity
+                    Waste Weight
+                  </label>
+                  <input
+                    type="number"
+                    id="weightWaste"
+                    value={weightWaste}
+                    onChange={(e) => setWeightWaste(e.target.value)}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                    placeholder="Enter weight of the waste"
+                    required
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label
+                    htmlFor="arrival"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
+                    Arrival time
+                  </label>
+                  <input
+                    type="time"
+                    id="arrival"
+                    value={arrival}
+                    onChange={(e) => setArrival(e.target.value)}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                    placeholder="Enter arrival time of the vehicle"
+                    required
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label
+                    htmlFor="departure"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
+                    Departure time
+                  </label>
+                  <input
+                    type="time"
+                    id="departure"
+                    value={departure}
+                    onChange={(e) => setDeparture(e.target.value)}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                    placeholder="Enter departure time of the vehicle"
+                    required
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label
+                    htmlFor="dateTime"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
+                    Date
+                  </label>
+                  <input
+                    type="date"
+                    id="dateTime"
+                    value={dateTime}
+                    onChange={(e) => setDateTime(e.target.value)}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                    placeholder="Select date"
+                    required
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label
+                    htmlFor="travelRoute"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
+                    Cost
                   </label>
                   <select
-                    id="capacity"
-                    name="capacity"
-                    value={capacity}
-                    onChange={(e) => setCapacity(e.target.value)}
+                    id="travelRoute"
+                    value={travelRoute}
+                    onChange={(e) => setTravelRoute(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                   >
-                    <option value="3"> 3 ton</option>
-                    <option value="5">5 ton</option>
-                    <option value="7">7 ton</option>
+                    <option value="Route number -1">Route number -1</option>
+                    <option value="Route number -2">Route number -2</option>
                   </select>
-                </div>
-
-                <div className="col-span-2">
-                  <label
-                    htmlFor="costLoaded"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Fuel cost per kilometer - fully loaded
-                  </label>
-                  <input
-                    type="number"
-                    name="costLoaded"
-                    id="costLoaded"
-                    value={costLoaded}
-                    onChange={(e) => setCostLoaded(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Fuel cost per kilometer - fully loaded"
-                    required
-                  />
-                </div>
-                <div className="col-span-2">
-                  <label
-                    htmlFor="costUnloaded"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Fuel cost per kilometer - unloaded
-                  </label>
-                  <input
-                    type="number"
-                    name="costUnloaded"
-                    id="costUnloaded"
-                    value={costUnloaded}
-                    onChange={(e) => setCostUnloaded(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Fuel cost per kilometer - unloaded"
-                    required
-                  />
-                </div>
-
-                <div className="col-span-2">
-                  <label
-                    htmlFor="stsNum"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    STS number
-                  </label>
-                  <input
-                    type="text"
-                    name="stsNum"
-                    id="stsNum"
-                    value={stsNum}
-                    onChange={(e) => setStsNum(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Enter the STS number of the vehicle"
-                    required
-                  />
                 </div>
               </div>
               <Button variant="contained" className="w-full" type="submit">
-                Add Vehicles
+                Add Bill
               </Button>
             </form>
           </div>

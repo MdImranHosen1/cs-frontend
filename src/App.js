@@ -16,6 +16,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { loginReload } from "./redux/slices/userHandleSlice";
 import { LandfillPage } from './pages/landﬁll/LandfillPage';
+import { LandfillDetailsPage } from "./pages/landﬁll/LandfillDetailsPage";
+import { PermissionsPage } from "./pages/permissions/PermissionsPage";
+import { PermissionDetailsPage } from './pages/permissions/PermissionDetailsPage';
 
 
 function App() {
@@ -27,7 +30,7 @@ function App() {
 
   },)
 
-  
+
   const userType = useSelector(
     (state) => state.userType?.userData?.userType
   );
@@ -57,8 +60,12 @@ function App() {
 
         {/* Landfill */}
         <Route exact path="/landfill" element={<LandfillPage />} />
-        <Route exact path="/landfill/:id" element={<LandfillPage />} />
-        
+        <Route exact path="/Landfill/:id" element={<LandfillDetailsPage />} />
+
+        {/* permission */}
+        <Route exact path="/rbac/permissions/" element={<PermissionsPage />} />
+        <Route exact path="/rbac/permissions/:id" element={<PermissionDetailsPage />} />
+
 
 
       </Routes>

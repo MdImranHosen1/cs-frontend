@@ -1,4 +1,4 @@
-import { useEffect, React } from "react";
+import { useEffect, React, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -10,20 +10,22 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 
-import { loginUser } from "./../../redux/slices/userHandleSlice";
+import { loginUser, logout } from "./../../redux/slices/userHandleSlice";
 
 const defaultTheme = createTheme();
 
 export const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [warning, setWarning] = useState(false);
   const userValidity = useSelector(
     (state) => state.userType?.userData?.userType
   );
@@ -37,6 +39,10 @@ export const LoginPage = () => {
         navigate("/sts/userId");
       } else if (userValidity === "Landfill Manager") {
         navigate("/sts/userId");
+      } else {
+        dispatch(logout());
+        setWarning(true);
+        setTimeout(setWarning(false), 5000);
       }
     }
   }, [userValidity]);
@@ -54,11 +60,18 @@ export const LoginPage = () => {
 
     const response = dispatch(loginUser(userData));
 
-    console.log("balid user", userValidity);
+    
   };
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      {warning && (
+        <Stack sx={{ width: "100%" }} spacing={2}>
+          <Alert variant="filled" severity="error">
+            Wrong email or password!
+          </Alert>
+        </Stack>
+      )}
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

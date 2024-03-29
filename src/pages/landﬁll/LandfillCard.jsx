@@ -23,7 +23,7 @@ export default function LandfillCard({ landfill  }) {
             <h4 class="mb-1">Operation Timespan: {landfill.operationTimespan}</h4>
             <h4 class="mb-1">Landfill Manager Id: {landfill.userId}</h4>
           </b>
-          <Link to={`/users/${landfill.userId}`}>
+          <Link to={`/landfill/${landfill.lfId}`}>
             <div class="text-sm w-28 rounded-sm text-blue-800 bg-gray-300 hover:bg-blue-700 hover:text-white   text-center">
               <b>More Info</b>
             </div>

@@ -1,0 +1,37 @@
+import * as React from "react";
+import { Link } from "react-router-dom";
+import img from "./../../assets/user.png";
+import ReadMoreOutlinedIcon from "@mui/icons-material/ReadMoreOutlined";
+import { Button } from "@mui/material";
+
+export default function PermissionCard({ permission }) {
+  return (
+    <div class="  flex  items-center w-full  bg-white border border-gray-100 rounded-lg shadow   hover:bg-gray-200">
+      <img
+        className="ml-5 mr-5 rounded-md object-cover rounded-t-lg h-40 w-40"
+        src={img}
+        alt="Photo"
+      />
+      <div class="flex justify-between w-full">
+        <div class="p-5">
+          <b>
+            <h1 class="mb-1">Name: {permission.userName}</h1>
+            <h4 class="mb-1">Type: {permission.userType}</h4>
+            <h4 class="mb-1">Phone Number: {permission.userPhone}</h4>
+            <h4 class="mb-1">Email: {permission.userEmail}</h4>
+            <h4 class="mb-1">Roles: {permission.userRoles}</h4>
+          </b>
+          <Link to={`/permissions/${permission.userId}`}>
+            <Button
+              variant="contained"
+              className="w-24"
+              endIcon={<ReadMoreOutlinedIcon />}
+            >
+              More
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
