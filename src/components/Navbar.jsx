@@ -17,8 +17,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/slices/userHandleSlice";
 
-const pages = ["Users", "Vehicles", "STS", "Landfill", "Roles", "Permissions"];
-const pagesLink = [
+let pages = ["Users", "Vehicles", "STS", "Landfill", "Roles", "Permissions"];
+let pagesLink = [
   "/users",
   "/vehicles",
   "/sts",
@@ -33,13 +33,19 @@ export const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [userValid, setUserValid] = React.useState(false);
+  const [userType, setUserType] = React.useState(false);
 
-  const userValidity = useSelector((state) => state.userType?.userData?.userType);
+
+  const userValidity = useSelector(
+    (state) => state.userType?.userData?.userType
+  );
+
   useEffect(() => {
     if (userValidity) {
+      setUserType(userValidity);
       setUserValid(true);
     }
-  });
+  }, [userValidity]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -115,7 +121,10 @@ export const Navbar = () => {
               }}
             >
               {pages.map((value, index) => (
-                <Link to={pagesLink[index]}>
+                <Link
+                  to={pagesLink[index]}
+                  className={`${userType === "admin" ? "" : "hidden"}`}
+                >
                   <MenuItem key={index} onClick={handleCloseNavMenu}>
                     <Typography textAlign="center">{value}</Typography>
                   </MenuItem>
@@ -147,7 +156,10 @@ export const Navbar = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((value, index) => (
-              <Link to={pagesLink[index]}>
+              <Link
+                to={pagesLink[index]}
+                className={`${userType === "admin" ? "" : "hidden"}`}
+              >
                 <Button
                   key={index}
                   onClick={handleCloseNavMenu}

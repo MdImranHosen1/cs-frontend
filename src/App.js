@@ -12,7 +12,7 @@ import { VehiclesAllPage } from "./pages/vehicles/VehiclesAllPage";
 import { StsPage } from "./pages/sts/StsPage";
 import { StsDetailsPage } from './pages/sts/StsDetailsPage';
 import { VehiclesDetailsPage } from "./pages/vehicles/VehicleDetailsPage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { loginReload } from "./redux/slices/userHandleSlice";
 import { LandfillPage } from './pages/landﬁll/LandfillPage';
@@ -27,6 +27,10 @@ function App() {
 
   },)
 
+  
+  const userType = useSelector(
+    (state) => state.userType?.userData?.userType
+  );
 
   return (
     <BrowserRouter>
@@ -53,6 +57,7 @@ function App() {
 
         {/* Landfill */}
         <Route exact path="/landfill" element={<LandfillPage />} />
+        <Route exact path="/landfill/:id" element={<LandfillPage />} />
         
 
 
