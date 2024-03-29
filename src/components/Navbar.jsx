@@ -13,6 +13,10 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../redux/slices/userHandleSlice";
+
 const pages = ["Users", "Vehicles", "STS", "Landfill", "Roles", "Permissions"];
 const pagesLink = [
   "/users",
@@ -25,9 +29,20 @@ const pagesLink = [
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 export const Navbar = () => {
+  const dispatch = useDispatch();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [userValid, setUserValid] = React.useState(false);
+
+  const userValidity = useSelector((state) => state.userType.userType);
+
+  useEffect(() => {
+    // const userValidity = dispatch(logout());
+    console.log("adfas", userValidity);
+    if (userValidity === "admin") {
+      setUserValid(true);
+    }
+  });
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -40,8 +55,13 @@ export const Navbar = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const handleCloseUserMenu = (setting) => {
+    console.log(setting);
+    if (setting === "Logout"){
+      dispatch(logout());
+      window.location.reload(true);
+    }
+     setAnchorElUser(null);
   };
 
   return (
@@ -169,7 +189,10 @@ export const Navbar = () => {
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
-                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <MenuItem
+                      key={setting}
+                      onClick={() => handleCloseUserMenu(setting)}
+                    >
                       <Typography textAlign="center">{setting}</Typography>
                     </MenuItem>
                   ))}

@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 import { Button } from "@mui/material";
 import UpdateIcon from "@mui/icons-material/Update";
 
+import { StsFromVehiclesTrans } from "./StsFromVehiclesTrans";
+
 export const StsDetailsPage = () => {
   const { userId } = useParams();
   const [user, setUser] = useState({
@@ -36,30 +38,40 @@ export const StsDetailsPage = () => {
   console.log(user);
 
   return (
-    <div className=" flex w-full p-10 h-screen ">
-      <div className="rounded-md w-1/4 p-5 bg-sky-500 h-full">
-        <img className=" rounded-lg" src={profileImg1} alt=""></img>
-        <h1 className=" mt-5 font-semibold text-lg text-center ">
-          Name: {user.userName}
-        </h1>
+    <div>
+      <div className=" flex w-full p-10 h-full ">
+        <div className="rounded-md w-1/4 p-5 bg-sky-500 h-full">
+          <img className=" rounded-lg" src={profileImg1} alt=""></img>
+          <h1 className=" mt-5 font-semibold text-lg text-center ">
+            Name: {user.userName}
+          </h1>
+        </div>
+        <div className=" w-3/4 p-5">
+          <h1 className=" font-bold text-2xl ml-5">About </h1>
+          <div className="p-6  ">
+            <b>
+              <h1 className="mb-1">Name :{user.userName}</h1>
+              <h4 className="mb-1">Type :{user.userType}</h4>
+              <h4 className="mb-1">Phone Number :{user.userPhone}</h4>
+              <h4 className="mb-1">Email : {user.userEmail}</h4>
+              <h4 className="mb-1">Roles :{user.userRoles}</h4>
+            </b>
+            <Button
+              variant="contained"
+              startIcon={<UpdateIcon />}
+              onClick={toggleAddStsView}
+            >
+              Update STS
+            </Button>
+          </div>
+        </div>
       </div>
-      <div className=" w-3/4 p-5">
-        <h1 className=" font-bold text-2xl ml-5">About </h1>
-        <div className="p-6  ">
-          <b>
-            <h1 className="mb-1">Name :{user.userName}</h1>
-            <h4 className="mb-1">Type :{user.userType}</h4>
-            <h4 className="mb-1">Phone Number :{user.userPhone}</h4>
-            <h4 className="mb-1">Email : {user.userEmail}</h4>
-            <h4 className="mb-1">Roles :{user.userRoles}</h4>
-          </b>
-          <Button
-            variant="contained"
-            startIcon={<UpdateIcon />}
-            onClick={toggleAddStsView}
-          >
-            Update STS
-          </Button>
+      <div>
+        <div className=" flex w-full p-10 h-full ">
+          <div className="rounded-md w-1/4 p-5h-full">
+            <StsFromVehiclesTrans/>
+          </div>
+          <div className=" w-3/4 p-5"></div>
         </div>
       </div>
     </div>

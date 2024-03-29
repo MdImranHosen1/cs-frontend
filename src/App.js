@@ -12,9 +12,22 @@ import { VehiclesAllPage } from "./pages/vehicles/VehiclesAllPage";
 import { StsPage } from "./pages/sts/StsPage";
 import { StsDetailsPage } from './pages/sts/StsDetailsPage';
 import { VehiclesDetailsPage } from "./pages/vehicles/VehicleDetailsPage";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { loginReload } from "./redux/slices/userHandleSlice";
+import { LandfillPage } from './pages/landﬁll/LandfillPage';
 
 
 function App() {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+
+    dispatch(loginReload());
+
+  },)
+
+
   return (
     <BrowserRouter>
       <Navbar />
@@ -37,6 +50,10 @@ function App() {
         {/* STS */}
         <Route exact path="/sts" element={<StsPage />} />
         <Route exact path="/sts/:id" element={<StsDetailsPage />} />
+
+        {/* Landfill */}
+        <Route exact path="/landfill" element={<LandfillPage />} />
+        
 
 
       </Routes>

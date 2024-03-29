@@ -12,17 +12,41 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUserType, login } from "../../redux/slices/userHandleSlice";
+import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
 export const LoginPage = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const userName = data.get("email");
+    const password = data.get("password");
+
+    const admin = { userName: "admin", password: "admin" };
+    localStorage.setItem("as", JSON.stringify(admin));
+
+    const localStore = JSON.parse(localStorage.getItem("admin"));
+
+    // console.log(localStore.userName, localStore.password, userName, password);
+
+    if (localStore.userName === userName && localStore.password === password) {
+
+      dispatch(login("admin"));
+
+
+      // dispatch(addUserType({ type: "admin" }));
+      // const admin = "admin";
+      // localStorage.setItem("userType", JSON.stringify(admin));
+      navigate("/");
+      console.log("login");
+    } else {
+      console.log("not login");
+    }
   };
 
   return (

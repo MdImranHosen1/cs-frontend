@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import img from "./../../assets/user.png";
+import ReadMoreOutlinedIcon from "@mui/icons-material/ReadMoreOutlined";
+import { Button } from "@mui/material";
 
 export default function StsCard({ sts }) {
   console.log(sts);
@@ -21,9 +23,13 @@ export default function StsCard({ sts }) {
             <h4 class="mb-1">Roles: {sts.managers}</h4>
           </b>
           <Link to={`/sts/${sts.id}`}>
-            <div class="text-sm w-28 rounded-sm text-blue-800 bg-gray-300 hover:bg-blue-700 hover:text-white   text-center">
-              <b>More Info</b>
-            </div>
+            <Button
+              variant="contained"
+              className="w-24"
+              endIcon={<ReadMoreOutlinedIcon />}
+            >
+              More
+            </Button>
           </Link>
         </div>
       </div>
