@@ -34,14 +34,12 @@ export const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [userValid, setUserValid] = React.useState(false);
 
-  // const userValidity = useSelector((state) => state.userData);
-  // console.log("userValidity", userValidity);
-
-  // useEffect(() => {
-  //   if (userValidity === "admin") {
-  //     setUserValid(true);
-  //   }
-  // });
+  const userValidity = useSelector((state) => state.userType?.userData?.userType);
+  useEffect(() => {
+    if (userValidity) {
+      setUserValid(true);
+    }
+  });
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);

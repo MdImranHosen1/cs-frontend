@@ -3,15 +3,25 @@ import axios from "axios";
 
 export const loginUser = createAsyncThunk('auth/login', async (userData) => {
     const response = await axios.post('http://localhost:5000/auth/login', userData);
+
     return response.data;
 });
 
 const UserHandleSlice = createSlice({
-    name: "userData",
-    initialState: { },
+    name: "userType",
+    initialState: { userData: null },
     reducers: {
-
-
+        logout: (state) => {
+            localStorage.removeItem("userDetails");
+            state.userData = null; 
+        },
+        loginReload: (state) => {
+            const userDataString = localStorage.getItem("userDetails");
+            const userData = JSON.parse(userDataString);
+            if (userData) {
+                state.userData = userData;
+            }
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -20,7 +30,6 @@ const UserHandleSlice = createSlice({
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.userData = action.payload;
-                // console.log(first)
                 localStorage.setItem("userDetails", JSON.stringify(action.payload));
 
                 state.loading = 'idle';

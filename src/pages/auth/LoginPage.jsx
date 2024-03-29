@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, React } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 
@@ -20,11 +20,26 @@ import { loginUser } from "./../../redux/slices/userHandleSlice";
 
 const defaultTheme = createTheme();
 
-
-
 export const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const userValidity = useSelector(
+    (state) => state.userType?.userData?.userType
+  );
+  const userId = useSelector((state) => state.userType?.userData?.id);
+
+  useEffect(() => {
+    if (userValidity) {
+      if (userValidity === "admin") {
+        navigate("/");
+      } else if (userValidity === "STS Manager") {
+        navigate("/sts/userId");
+      } else if (userValidity === "Landfill Manager") {
+        navigate("/sts/userId");
+      }
+    }
+  }, [userValidity]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -38,7 +53,8 @@ export const LoginPage = () => {
     };
 
     const response = dispatch(loginUser(userData));
-    console.log(response.Object);
+
+    console.log("balid user", userValidity);
   };
 
   return (
