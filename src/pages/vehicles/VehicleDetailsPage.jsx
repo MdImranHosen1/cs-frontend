@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import profileImg1 from "./../../assets/user.png";
 import { Link, useParams } from "react-router-dom";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
-import { UserForm } from "./UserForm";
 import { Button } from "@mui/material";
+import { VehiclesForm } from "./VehiclesForm";
 
-export const UserDetailsPage = () => {
-  const { userId } = useParams();
-  const [user, setUser] = useState({
-    userId: 1,
+export const VehiclesDetailsPage = () => {
+  const { id } = useParams();
+  const [data, setData] = useState({
+    id: 1,
     userType: "Type1",
     userName: "user1",
     userPassword: "pass123",
@@ -17,7 +17,7 @@ export const UserDetailsPage = () => {
     userEmail: "user1@example.com",
   });
 
-  const [viewStsModel, setViewStsModel] = useState(false);
+  const [viewModel, setViewModel] = useState(false);
 
   // const getUserData=async()=>{
   //   const response = await axios.get('http://localhost:5000/users');
@@ -30,45 +30,44 @@ export const UserDetailsPage = () => {
 
   // }, []);
 
-const onDeleteUser = () => {
-  const isConfirmed = window.confirm("Do you want to delete the user?");
-  if (isConfirmed) {
-    // Proceed with user deletion
-  } else {
-    // User cancelled deletion
-  }
-};
+  const onDeleteUser = () => {
+    const isConfirmed = window.confirm("Do you want to delete the vehicles?");
+    if (isConfirmed) {
+      // Proceed with user deletion
+    } else {
+      // User cancelled deletion
+    }
+  };
 
   return (
     <div className=" flex w-full p-10 h-full ">
       <div className="rounded-md w-1/4 p-5 bg-sky-500 h-full">
         <img className=" rounded-lg" src={profileImg1} alt=""></img>
         <h1 className=" mt-5 font-semibold text-lg text-center ">
-          Name: {user.userName}
+          Name: {data.userName}
         </h1>
       </div>
       <div className=" w-3/4 p-5">
         <h1 className=" font-bold text-2xl ml-5">About </h1>
         <div className="p-6  ">
           <b>
-            <h1 className="mb-1">Name :{user.userName}</h1>
-            <h4 className="mb-1">Type :{user.userType}</h4>
-            <h4 className="mb-1">Phone Number :{user.userPhone}</h4>
-            <h4 className="mb-1">Email : {user.userEmail}</h4>
-            <h4 className="mb-1">Roles :{user.userRoles}</h4>
+            <h1 className="mb-1">Name :{data.userName}</h1>
+            <h4 className="mb-1">Type :{data.userType}</h4>
+            <h4 className="mb-1">Phone Number :{data.userPhone}</h4>
+            <h4 className="mb-1">Email : {data.userEmail}</h4>
+            <h4 className="mb-1">Roles :{data.userRoles}</h4>
           </b>
 
-          <UserForm update={1} user={user} />
+          <VehiclesForm update={1} user={data} />
 
-          <div className=" ml-44">
+          <div className=" ml-52">
             <Button
               variant="contained"
-              className="w-40"
               color="error"
               onClick={onDeleteUser}
               startIcon={<DeleteForeverOutlinedIcon />}
             >
-              Delete User
+              Delete Vehicles
             </Button>
           </div>
         </div>

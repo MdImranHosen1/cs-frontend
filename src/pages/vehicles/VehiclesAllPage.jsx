@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { VehiclesForm } from "./VehiclesForm";
 import { getVehicles } from "../../redux/slices/vehiclesSlice";
 
+
 export const VehiclesAllPage = () => {
   const data = useSelector((state) => state.vehicles);
   const vehicles = data.data;
@@ -13,7 +14,6 @@ export const VehiclesAllPage = () => {
   useEffect(() => {
     dispatch(getVehicles());
   }, [dispatch]);
-
 
   return (
     <div className="flex w-full">
@@ -31,6 +31,7 @@ export const VehiclesAllPage = () => {
             </div>
           );
         })}
+        
       </div>
     </div>
   );

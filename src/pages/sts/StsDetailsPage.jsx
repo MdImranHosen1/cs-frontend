@@ -3,6 +3,8 @@ import profileImg from "../../assets/profile1.png";
 import profileImg1 from "./../../assets/user.png";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { Button } from "@mui/material";
+import UpdateIcon from "@mui/icons-material/Update";
 
 export const StsDetailsPage = () => {
   const { userId } = useParams();
@@ -15,6 +17,11 @@ export const StsDetailsPage = () => {
     userPhone: "1234567890",
     userEmail: "user1@example.com",
   });
+
+  const [viewStsModel, setViewStsModel] = useState(false);
+  const toggleAddStsView = () => {
+    setViewStsModel(!viewStsModel);
+  };
 
   // const getUserData=async()=>{
   //   const response = await axios.get('http://localhost:5000/users');
@@ -46,6 +53,13 @@ export const StsDetailsPage = () => {
             <h4 className="mb-1">Email : {user.userEmail}</h4>
             <h4 className="mb-1">Roles :{user.userRoles}</h4>
           </b>
+          <Button
+            variant="contained"
+            startIcon={<UpdateIcon />}
+            onClick={toggleAddStsView}
+          >
+            Update STS
+          </Button>
         </div>
       </div>
     </div>

@@ -24,7 +24,7 @@ export const StsForm = () => {
       wardNum: wardNum,
       capacity: capacity,
       coordinate: coordinate,
-      managers: managers,
+      managers: [managers],
     };
     console.log(stsData);
 

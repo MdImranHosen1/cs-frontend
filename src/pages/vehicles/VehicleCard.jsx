@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "./../../assets/truckDriver.png";
-
+import { Button } from "@mui/material";
+import ReadMoreOutlinedIcon from "@mui/icons-material/ReadMoreOutlined";
 export const VehicleCard = ({ vehicles }) => {
   console.log(vehicles);
   return (
@@ -25,6 +26,15 @@ export const VehicleCard = ({ vehicles }) => {
               {" "}
               Fuel cost unloaded :{vehicles.costUnloaded} Liter
             </h4>
+            <Link to={`/vehicles/${vehicles.id}`}>
+              <Button
+                variant="contained"
+                className="w-24"
+                endIcon={<ReadMoreOutlinedIcon />}
+              >
+                More
+              </Button>
+            </Link>
           </b>
         </div>
       </div>

@@ -1,9 +1,10 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import img from "./../../assets/user.png";
+import ReadMoreOutlinedIcon from "@mui/icons-material/ReadMoreOutlined";
+import { Button } from "@mui/material";
 
 export default function UserCard({ users }) {
-
   console.log(users);
   return (
     <div class="  flex  items-center w-full  bg-white border border-gray-100 rounded-lg shadow   hover:bg-gray-200">
@@ -22,9 +23,13 @@ export default function UserCard({ users }) {
             <h4 class="mb-1">Roles: {users.userRoles}</h4>
           </b>
           <Link to={`/users/${users.userId}`}>
-            <div class="text-sm w-28 rounded-sm text-blue-800 bg-gray-300 hover:bg-blue-700 hover:text-white   text-center">
-              <b>More Info</b>
-            </div>
+            <Button
+              variant="contained"
+              className="w-24"
+              endIcon={<ReadMoreOutlinedIcon />}
+            >
+              More
+            </Button>
           </Link>
         </div>
       </div>

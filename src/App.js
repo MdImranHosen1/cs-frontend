@@ -11,6 +11,7 @@ import { ProfilePage } from "./pages/profile/ProfilePage";
 import { VehiclesAllPage } from "./pages/vehicles/VehiclesAllPage";
 import { StsPage } from "./pages/sts/StsPage";
 import { StsDetailsPage } from './pages/sts/StsDetailsPage';
+import { VehiclesDetailsPage } from "./pages/vehicles/VehicleDetailsPage";
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         <Route exact path="/auth/change-password" element={<PasswordChangePage />} />
         {/* Vehicles */}
         <Route exact path="/vehicles" element={<VehiclesAllPage />} />
+        <Route exact path="/vehicles/:id" element={<VehiclesDetailsPage />} />
         {/* STS */}
         <Route exact path="/sts" element={<StsPage />} />
         <Route exact path="/sts/:id" element={<StsDetailsPage />} />

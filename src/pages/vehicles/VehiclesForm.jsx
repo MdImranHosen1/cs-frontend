@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { postVehicle } from "../../redux/slices/vehiclesSlice";
+import UpdateIcon from "@mui/icons-material/Update";
+import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
 
-export const VehiclesForm = () => {
+export const VehiclesForm = ({ update = 0, vehicle = {} }) => {
   const [viewUserModel, setViewUserModel] = useState(false);
+  
   const dispatch = useDispatch();
   const [regNum, setRegNum] = useState("");
   const [type, setType] = useState("Open Truck");
@@ -44,13 +47,25 @@ export const VehiclesForm = () => {
   return (
     <div>
       <div className="fixed w-1/4 pr-10">
-        <Button
-          variant="contained"
-          className="w-full"
-          onClick={toggleAddUserView}
-        >
-          Add Vehicle
-        </Button>
+        {update ? (
+          <Button
+            variant="contained"
+            startIcon={<UpdateIcon />}
+            className="w-auto"
+            onClick={toggleAddUserView}
+          >
+            Update Vehicles
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            className="w-full"
+            startIcon={<PersonAddAlt1OutlinedIcon />}
+            onClick={toggleAddUserView}
+          >
+            Add Vehicle
+          </Button>
+        )}
       </div>
 
       {viewUserModel && (

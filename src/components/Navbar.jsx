@@ -13,8 +13,15 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { Link } from "react-router-dom";
-const pages = ["Users", "Vehicles", "STS", "Landfill"];
-const pagesLink = ["/users", "/vehicles", "/sts", "/landfill"];
+const pages = ["Users", "Vehicles", "STS", "Landfill", "Roles", "Permissions"];
+const pagesLink = [
+  "/users",
+  "/vehicles",
+  "/sts",
+  "/landfill",
+  "/rbac/roles",
+  "/rbac/permissions",
+];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 export const Navbar = () => {
@@ -119,8 +126,7 @@ export const Navbar = () => {
               textDecoration: "none",
             }}
           >
-            <Link to='/'>EcoSync
-            </Link>
+            <Link to="/">EcoSync</Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((value, index) => (

@@ -2,15 +2,20 @@ import React, { useState } from "react";
 import { Button } from "@mui/material";
 import { postUser } from "../../redux/slices/usersSlice";
 import { useDispatch } from "react-redux";
+import UpdateIcon from "@mui/icons-material/Update";
+import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
 
-export const UserForm = () => {
+export const UserForm = ({ update = 0, user = {} }) => {
+  console.log(user, update);
   const [viewUserModel, setViewUserModel] = useState(false);
   const dispatch = useDispatch();
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [userType, setUserType] = useState("Unassigned");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState(update ? user.userName : "");
+  const [password, setPassword] = useState(update ? user.userPassword : "");
+  const [userType, setUserType] = useState(
+    update ? user.userName : "Unassigned"
+  );
+  const [phone, setPhone] = useState(update ? user.userPhone : "");
+  const [email, setEmail] = useState(update ? user.userEmail : "");
 
   const toggleAddUserView = () => {
     setViewUserModel(!viewUserModel);
@@ -43,13 +48,25 @@ export const UserForm = () => {
   return (
     <div>
       <div className="fixed w-1/4 pr-10">
-        <Button
-          variant="contained"
-          className="w-full"
-          onClick={toggleAddUserView}
-        >
-          Add User
-        </Button>
+        {update ? (
+          <Button
+            variant="contained"
+            startIcon={<UpdateIcon />}
+            className="w-auto"
+            onClick={toggleAddUserView}
+          >
+            Update User
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            className="w-full"
+            startIcon={<PersonAddAlt1OutlinedIcon />}
+            onClick={toggleAddUserView}
+          >
+            Add User
+          </Button>
+        )}
       </div>
 
       {viewUserModel && (
@@ -65,7 +82,7 @@ export const UserForm = () => {
           >
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-gray-900">
-                Add new users
+                {update ? "Update User" : "Add new users"}
               </h3>
               <button
                 type="button"
@@ -186,7 +203,7 @@ export const UserForm = () => {
                 </div>
               </div>
               <Button variant="contained" className="w-full" type="submit">
-                Add User
+                {update ? "Update User" : "Add new users"}
               </Button>
             </form>
           </div>
