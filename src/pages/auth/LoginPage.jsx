@@ -11,16 +11,32 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link } from "react-router-dom";
+import { Link,useEffect } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addUserType, login } from "../../redux/slices/userHandleSlice";
+import { addUserType, login, loginReload } from "../../redux/slices/userHandleSlice";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+
 
 const defaultTheme = createTheme();
 
 export const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+
+  const loginUser=async()=>{
+    const data = {
+      userEmail: "imranhosen.bsmrstu@gmail.com",
+      userPassword: "imran",
+    };
+   const response = await axios.post("http://localhost:5000/auth/login", data);
+
+   console.log(response.data);
+  }
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -32,16 +48,14 @@ export const LoginPage = () => {
 
     const localStore = JSON.parse(localStorage.getItem("admin"));
 
+    loginUser();
+
+
     // console.log(localStore.userName, localStore.password, userName, password);
 
     if (localStore.userName === userName && localStore.password === password) {
 
       dispatch(login("admin"));
-
-
-      // dispatch(addUserType({ type: "admin" }));
-      // const admin = "admin";
-      // localStorage.setItem("userType", JSON.stringify(admin));
       navigate("/");
       console.log("login");
     } else {
