@@ -37,12 +37,12 @@ export const UserForm = ({ update = 0, user = {} }) => {
     dispatch(postUser(userData));
     // submitData(userData);
 
-    // setName("");
-    // setPassword("");
-    // setUserType("Unassigned");
-    // setPhone("");
-    // setEmail("");
-    // toggleAddUserView();
+    setName("");
+    setPassword("");
+    setUserType("Unassigned");
+    setPhone("");
+    setEmail("");
+    toggleAddUserView();
   };
 
   return (

@@ -51,7 +51,7 @@ export const StsFromVehiclesTrans = ({ update = 0, vehicle = {} }) => {
     setArrival("");
     setDeparture("");
     setDateTime("");
-    setTravelRoute("Route number -1");
+    setTravelRoute("Route number -1"); 
 
     toggleAddUserView();
   };

@@ -34,15 +34,14 @@ export const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [userValid, setUserValid] = React.useState(false);
 
-  const userValidity = useSelector((state) => state.userType.userType);
+  // const userValidity = useSelector((state) => state.userData);
+  // console.log("userValidity", userValidity);
 
-  useEffect(() => {
-    // const userValidity = dispatch(logout());
-    console.log("adfas", userValidity);
-    if (userValidity === "admin") {
-      setUserValid(true);
-    }
-  });
+  // useEffect(() => {
+  //   if (userValidity === "admin") {
+  //     setUserValid(true);
+  //   }
+  // });
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -57,11 +56,11 @@ export const Navbar = () => {
 
   const handleCloseUserMenu = (setting) => {
     console.log(setting);
-    if (setting === "Logout"){
+    if (setting === "Logout") {
       dispatch(logout());
       window.location.reload(true);
     }
-     setAnchorElUser(null);
+    setAnchorElUser(null);
   };
 
   return (
