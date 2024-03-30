@@ -12,12 +12,7 @@ export const PermissionForm = ({ update = 0, user = {} }) => {
   const [permissionName, setPermissionName] = useState(
     update ? user.permissionName : ""
   );
-  const [permissionGranted, setPermissionGranted] = useState(
-    update ? user.permissionGranted : false
-  );
-  const [permissionSection, setPermissionSection] = useState(
-    update ? user.permissionSection : ""
-  );
+
   const [details, setDetails] = useState(update ? user.details : "");
 
   const toggleAddView = () => {
@@ -29,16 +24,12 @@ export const PermissionForm = ({ update = 0, user = {} }) => {
 
     const userData = {
       permissionName: permissionName,
-      permissionGranted: permissionGranted,
-      permissionSection: permissionSection,
       details: details,
     };
 
     dispatch(postUser(userData));
 
     setPermissionName("");
-    setPermissionGranted(false);
-    setPermissionSection("");
     setDetails("");
     toggleAddView();
   };
@@ -126,48 +117,13 @@ export const PermissionForm = ({ update = 0, user = {} }) => {
                   />
                 </div>
 
-                <div className="col-span-2">
-                  <label
-                    htmlFor="permissionGranted"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Permission Granted
-                  </label>
-                  <select
-                    id="permissionGranted"
-                    name="permissionGranted"
-                    value={permissionGranted}
-                    onChange={(e) => setPermissionGranted(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
-                  >
-                    <option value={true}>Yes</option>
-                    <option value={false}>No</option>
-                  </select>
-                </div>
-                <div className="col-span-2">
-                  <label
-                    htmlFor="permissionSection"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Permission Section
-                  </label>
-                  <input
-                    type="text"
-                    name="permissionSection"
-                    id="permissionSection"
-                    value={permissionSection}
-                    onChange={(e) => setPermissionSection(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Type permission section"
-                    required
-                  />
-                </div>
+               
                 <div className="col-span-2">
                   <label
                     htmlFor="details"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Details
+                    permission Details
                   </label>
                   <input
                     type="text"
