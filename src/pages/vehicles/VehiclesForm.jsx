@@ -1,25 +1,31 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { postVehicle } from "../../redux/slices/vehiclesSlice";
+import {
+  postVehicle,
+  updateVehicle,
+} from "../../redux/slices/vehiclesSlice";
 import UpdateIcon from "@mui/icons-material/Update";
-import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
+import AddRoadTwoToneIcon from "@mui/icons-material/AddRoadTwoTone";
 
-export const VehiclesForm = ({ update = 0, vehicle = {} }) => {
+export const VehiclesForm = ({ update = 0, data = {} }) => {
   const [viewUserModel, setViewUserModel] = useState(false);
-  
-  const dispatch = useDispatch();
-  const [regNum, setRegNum] = useState("");
-  const [type, setType] = useState("Open Truck");
-  const [capacity, setCapacity] = useState("3 ton");
-  const [costLoaded, setCostLoaded] = useState("");
-  const [costUnloaded, setCostUnloaded] = useState("");
-  const [stsNum, setStsNum] = useState("");
 
-  const toggleAddUserView = () => {
+  const dispatch = useDispatch();
+  const [regNum, setRegNum] = useState(update ? data?.regNum : "");
+  const [type, setType] = useState(update ? data?.type : "Open Truck");
+  const [capacity, setCapacity] = useState(update ? data?.capacity : "3 ton");
+  const [costLoaded, setCostLoaded] = useState(update ? data?.costLoaded : "");
+  const [costUnloaded, setCostUnloaded] = useState(
+    update ? data?.costUnloaded : ""
+  );
+  const [stsNum, setStsNum] = useState(update ? data?.stsID : "");
+
+  const toggleAddView = () => {
     document.body.style.overflow = viewUserModel ? "auto" : "hidden";
     setViewUserModel(!viewUserModel);
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -29,39 +35,45 @@ export const VehiclesForm = ({ update = 0, vehicle = {} }) => {
       capacity: capacity,
       costLoaded: costLoaded,
       costUnloaded: costUnloaded,
-      stsId: stsNum,
+      stsID: stsNum,
     };
 
-    console.log(vehicleData);
-    dispatch(postVehicle(vehicleData));
-
-    setRegNum("");
-    setType("Open Truck");
-    setCapacity("3 ton");
-    setCostLoaded("");
-    setCostUnloaded("");
-    setStsNum("");
-    toggleAddUserView();
+    if (update === 0) {
+      dispatch(postVehicle(vehicleData));
+      setRegNum("");
+      setType("Open Truck");
+      setCapacity("3 ton");
+      setCostLoaded("");
+      setCostUnloaded("");
+      setStsNum("");
+    } else  if (update === 1) {
+      dispatch(
+        updateVehicle({ vehicleId: data._id, vehicleData: vehicleData })
+      );
+    }
+    toggleAddView();
   };
 
   return (
     <div>
-      <div className="fixed w-1/4 pr-10">
+      <div className="fixed ">
         {update ? (
-          <Button
-            variant="contained"
-            startIcon={<UpdateIcon />}
-            className="w-auto"
-            onClick={toggleAddUserView}
-          >
-            Update Vehicles
-          </Button>
+          <>
+            <Button
+              variant="contained"
+              startIcon={<UpdateIcon />}
+              className="w-auto"
+              onClick={toggleAddView}
+            >
+              Update Vehicles
+            </Button>
+          </>
         ) : (
           <Button
             variant="contained"
             className="w-full"
-            startIcon={<PersonAddAlt1OutlinedIcon />}
-            onClick={toggleAddUserView}
+            startIcon={<AddRoadTwoToneIcon />}
+            onClick={toggleAddView}
           >
             Add Vehicle
           </Button>
@@ -81,12 +93,12 @@ export const VehiclesForm = ({ update = 0, vehicle = {} }) => {
           >
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-gray-900">
-                Add new vehicle
+                {update ? "Update Vehicle" : "Add New Vehicle"}
               </h3>
               <button
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8"
-                onClick={toggleAddUserView}
+                onClick={toggleAddView}
               >
                 <svg
                   className="w-3 h-3"
@@ -122,7 +134,7 @@ export const VehiclesForm = ({ update = 0, vehicle = {} }) => {
                     value={regNum}
                     onChange={(e) => setRegNum(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Type vehicles registratin id"
+                    placeholder="Enter vehicle registration id"
                     required
                   />
                 </div>
@@ -131,7 +143,7 @@ export const VehiclesForm = ({ update = 0, vehicle = {} }) => {
                     htmlFor="type"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Vehicles type
+                    Vehicle Type
                   </label>
                   <select
                     id="type"
@@ -151,7 +163,7 @@ export const VehiclesForm = ({ update = 0, vehicle = {} }) => {
                     htmlFor="capacity"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Vehicles capacity
+                    Vehicle Capacity
                   </label>
                   <select
                     id="capacity"
@@ -160,19 +172,18 @@ export const VehiclesForm = ({ update = 0, vehicle = {} }) => {
                     onChange={(e) => setCapacity(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                   >
-                    <option value="3"> 3 ton</option>
-                    <option value="5">5 ton</option>
-                    <option value="7">7 ton</option>
-                    <option value="15">15 ton</option>
+                    <option value="3 ton">3 ton</option>
+                    <option value="5 ton">5 ton</option>
+                    <option value="7 ton">7 ton</option>
+                    <option value="15 ton">15 ton</option>
                   </select>
                 </div>
-
                 <div className="col-span-2">
                   <label
                     htmlFor="costLoaded"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Fuel cost per kilometer - fully loaded
+                    Fuel Cost per Kilometer - Fully Loaded
                   </label>
                   <input
                     type="number"
@@ -181,7 +192,7 @@ export const VehiclesForm = ({ update = 0, vehicle = {} }) => {
                     value={costLoaded}
                     onChange={(e) => setCostLoaded(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Fuel cost per kilometer - fully loaded"
+                    placeholder="Enter fuel cost per kilometer - fully loaded"
                     required
                   />
                 </div>
@@ -190,7 +201,7 @@ export const VehiclesForm = ({ update = 0, vehicle = {} }) => {
                     htmlFor="costUnloaded"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Fuel cost per kilometer - unloaded
+                    Fuel Cost per Kilometer - Unloaded
                   </label>
                   <input
                     type="number"
@@ -199,17 +210,16 @@ export const VehiclesForm = ({ update = 0, vehicle = {} }) => {
                     value={costUnloaded}
                     onChange={(e) => setCostUnloaded(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Fuel cost per kilometer - unloaded"
+                    placeholder="Enter fuel cost per kilometer - unloaded"
                     required
                   />
                 </div>
-
                 <div className="col-span-2">
                   <label
                     htmlFor="stsNum"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    STS number
+                    STS Number
                   </label>
                   <input
                     type="text"
@@ -224,7 +234,7 @@ export const VehiclesForm = ({ update = 0, vehicle = {} }) => {
                 </div>
               </div>
               <Button variant="contained" className="w-full" type="submit">
-                Add Vehicles
+                {update ? "Update Vehicle" : "Add Vehicle"}
               </Button>
             </form>
           </div>

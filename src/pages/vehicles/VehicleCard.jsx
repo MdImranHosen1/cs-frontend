@@ -4,7 +4,6 @@ import logo from "./../../assets/truckDriver.png";
 import { Button } from "@mui/material";
 import ReadMoreOutlinedIcon from "@mui/icons-material/ReadMoreOutlined";
 export const VehicleCard = ({ vehicles }) => {
-  console.log(vehicles);
   return (
     <div class="  flex  items-center w-full  bg-white border border-gray-200 rounded-lg shadow   hover:bg-gray-200">
       <img
@@ -26,7 +25,7 @@ export const VehicleCard = ({ vehicles }) => {
               {" "}
               Fuel cost unloaded :{vehicles.costUnloaded} Liter
             </h4>
-            <Link to={`/vehicles/${vehicles.id}`}>
+            <Link to={`/vehicles/${vehicles._id}`}>
               <Button
                 variant="contained"
                 className="w-24"

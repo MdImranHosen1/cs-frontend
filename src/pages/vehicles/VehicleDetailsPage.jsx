@@ -1,41 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import profileImg1 from "./../../assets/user.png";
-import { Link, useParams } from "react-router-dom";
-import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
+import { useParams, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { Button } from "@mui/material";
+
+import Box from "@mui/material/Box";
+import LinearProgress from "@mui/material/LinearProgress";
+
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import { VehiclesForm } from "./VehiclesForm";
+import {
+  deleteVehicleById,
+  getVehicleById,
+} from "../../redux/slices/vehiclesSlice";
 
 export const VehiclesDetailsPage = () => {
   const { id } = useParams();
-  const [data, setData] = useState({
-    id: 1,
-    userType: "Type1",
-    userName: "user1",
-    userPassword: "pass123",
-    userRoles: ["role1", "role2"],
-    userPhone: "1234567890",
-    userEmail: "user1@example.com",
-  });
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [viewModel, setViewModel] = useState(false);
+  const data = useSelector((state) => state.vehicles.data[0]);
 
-  // const getUserData=async()=>{
-  //   const response = await axios.get('http://localhost:5000/users');
-  //   setData(response.data);
-  // }
+  console.log("asdfasd", data);
 
-  // useEffect(() => {
-  //   getUserData();
-  //
+  useEffect(() => {
+    dispatch(getVehicleById(id));
+  }, [dispatch, id]);
 
-  // }, []);
+  if (!data) {
+    return (
+      <div>
+        <Box sx={{ width: "100%" }}>
+          <LinearProgress />
+        </Box>
+      </div>
+    );
+  }
 
-  const onDeleteUser = () => {
+  const onDeleteData = () => {
     const isConfirmed = window.confirm("Do you want to delete the vehicles?");
     if (isConfirmed) {
-      // Proceed with user deletion
-    } else {
-      // User cancelled deletion
+      dispatch(deleteVehicleById(id)).then(() => {
+        navigate("/vehicles");
+      });
     }
   };
 
@@ -49,22 +56,23 @@ export const VehiclesDetailsPage = () => {
       </div>
       <div className=" w-3/4 p-5">
         <h1 className=" font-bold text-2xl ml-5">About </h1>
-        <div className="p-6  ">
+        <div className="pl-6  ">
           <b>
-            <h1 className="mb-1">Name :{data.userName}</h1>
-            <h4 className="mb-1">Type :{data.userType}</h4>
-            <h4 className="mb-1">Phone Number :{data.userPhone}</h4>
-            <h4 className="mb-1">Email : {data.userEmail}</h4>
-            <h4 className="mb-1">Roles :{data.userRoles}</h4>
+            <h1 className="mb-1">Capacity: {data.capacity}</h1>
+            <h4 className="mb-1">Cost Loaded: {data.costLoaded}</h4>
+            <h4 className="mb-1">Cost Unloaded: {data.costUnloaded}</h4>
+            <h4 className="mb-1">Registration Number: {data.regNum}</h4>
+            <h4 className="mb-1">Status ID: {data.stsID}</h4>
+            <h4 className="mb-1">Type: {data.type}</h4>
           </b>
 
-          <VehiclesForm update={1} user={data} />
+          <VehiclesForm update={1} data={data} />
 
-          <div className=" ml-52">
+          <div className=" ml-48">
             <Button
               variant="contained"
               color="error"
-              onClick={onDeleteUser}
+              onClick={onDeleteData}
               startIcon={<DeleteForeverOutlinedIcon />}
             >
               Delete Vehicles

@@ -1,35 +1,54 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+const getToken = () => {
+    const userDetails = JSON.parse(localStorage.getItem('userDetails'));
+    return userDetails ? userDetails.token : null;
+};
+
+axios.interceptors.request.use(
+    (config) => {
+        const token = getToken();
+        if (token) {
+            config.headers.Authorization = token;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
 export const getVehicles = createAsyncThunk('vehicles/getVehicles', async () => {
     const response = await axios.get('http://localhost:5000/vehicles');
     return response.data;
 });
 
 export const postVehicle = createAsyncThunk('vehicles/postVehicle', async (vehicleData) => {
-    const response = await axios.post('http://localhost:5000/vehicles/', vehicleData);
+    const response = await axios.post('http://localhost:5000/vehicles', vehicleData);
+    return response.data;
+});
 
+export const getVehicleById = createAsyncThunk('vehicles/getVehicleById', async (vehicleId) => {
+    const response = await axios.get(`http://localhost:5000/vehicles/${vehicleId}`);
+    return response.data;
+});
+
+export const updateVehicle = createAsyncThunk('vehicles/updateVehicle', async ({ vehicleId, vehicleData }) => {
+    const response = await axios.put(`http://localhost:5000/vehicles/${vehicleId}`, vehicleData);
+    return response.data;
+});
+
+export const deleteVehicleById = createAsyncThunk('vehicles/deleteVehicleById', async (vehicleId) => {
+    const response = await axios.delete(`http://localhost:5000/vehicles/${vehicleId}`);
     return response.data;
 });
 
 const initialState = {
-    data: [
-        { "vId": 1, "stsId": 1, "regNum": "ABC123", "type": "Truck", "capacity": 100, "costLoaded": 50, "costUnloaded": 30 },
-        { "vId": 2, "stsId": 2, "regNum": "DEF456", "type": "Van", "capacity": 50, "costLoaded": 40, "costUnloaded": 25 },
-        { "vId": 3, "stsId": 3, "regNum": "GHI789", "type": "Truck", "capacity": 150, "costLoaded": 60, "costUnloaded": 35 },
-        { "vId": 4, "stsId": 4, "regNum": "JKL012", "type": "Van", "capacity": 70, "costLoaded": 45, "costUnloaded": 28 },
-        { "vId": 5, "stsId": 5, "regNum": "MNO345", "type": "Truck", "capacity": 120, "costLoaded": 55, "costUnloaded": 32 },
-        { "vId": 6, "stsId": 6, "regNum": "PQR678", "type": "Van", "capacity": 80, "costLoaded": 48, "costUnloaded": 27 },
-        { "vId": 7, "stsId": 7, "regNum": "STU901", "type": "Truck", "capacity": 130, "costLoaded": 57, "costUnloaded": 33 },
-        { "vId": 8, "stsId": 8, "regNum": "VWX234", "type": "Van", "capacity": 60, "costLoaded": 42, "costUnloaded": 26 },
-        { "vId": 9, "stsId": 9, "regNum": "YZA567", "type": "Truck", "capacity": 140, "costLoaded": 58, "costUnloaded": 34 },
-        { "vId": 10, "stsId": 10, "regNum": "BCD890", "type": "Van", "capacity": 90, "costLoaded": 50, "costUnloaded": 29 }
-    ]
-    ,
+    data: [],
     loading: 'idle',
     error: null,
 };
-
 
 export const vehiclesSlice = createSlice({
     name: 'vehicles',
@@ -51,7 +70,7 @@ export const vehiclesSlice = createSlice({
             .addCase(getVehicles.rejected, (state) => {
                 if (state.loading === 'pending') {
                     state.loading = 'idle';
-                    state.error = 'Error occurred';
+                    state.error = 'Error occurred while fetching vehicles';
                 }
             })
             .addCase(postVehicle.pending, (state) => {
@@ -63,7 +82,45 @@ export const vehiclesSlice = createSlice({
             })
             .addCase(postVehicle.rejected, (state) => {
                 state.loading = 'idle';
-                state.error = 'Error occurred while adding vehicls';
+                state.error = 'Error occurred while adding vehicles';
+            })
+            .addCase(getVehicleById.pending, (state) => {
+                state.loading = 'pending';
+            })
+            .addCase(getVehicleById.fulfilled, (state, action) => {
+                state.data = [action.payload]; // Assuming single vehicle data
+                state.loading = 'idle';
+            })
+            .addCase(getVehicleById.rejected, (state) => {
+                state.loading = 'idle';
+                state.error = 'Error occurred while fetching vehicle';
+            })
+            .addCase(updateVehicle.pending, (state) => {
+                state.loading = 'pending';
+            })
+            .addCase(updateVehicle.fulfilled, (state, action) => {
+                const updatedVehicle = action.payload;
+                const index = state.data.findIndex(vehicle => vehicle.id === updatedVehicle.id);
+                if (index !== -1) {
+                    state.data[index] = updatedVehicle;
+                }
+                state.loading = 'idle';
+            })
+            .addCase(updateVehicle.rejected, (state) => {
+                state.loading = 'idle';
+                state.error = 'Error occurred while updating vehicle';
+            })
+            .addCase(deleteVehicleById.pending, (state) => {
+                state.loading = 'pending';
+            })
+            .addCase(deleteVehicleById.fulfilled, (state, action) => {
+                const vehicleId = action.payload;
+                state.data = state.data.filter(vehicle => vehicle.id !== vehicleId);
+                state.loading = 'idle';
+            })
+            .addCase(deleteVehicleById.rejected, (state) => {
+                state.loading = 'idle';
+                state.error = 'Error occurred while deleting vehicle';
             });
     },
 });
