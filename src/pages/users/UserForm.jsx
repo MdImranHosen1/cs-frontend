@@ -15,6 +15,9 @@ export const UserForm = ({ update = 0, user = {} }) => {
   );
   const [phone, setPhone] = useState(update ? user?.userPhone : "");
   const [email, setEmail] = useState(update ? user?.userEmail : "");
+  const [stsOrLandfillNum, setStsOrLandfillNum] = useState(
+    update ? user?.stsOrLandfillNum : ""
+  );
 
   const toggleAddUserView = () => {
     setViewUserModel(!viewUserModel);
@@ -30,6 +33,7 @@ export const UserForm = ({ update = 0, user = {} }) => {
       userRoles: [],
       userPhone: phone,
       userEmail: email,
+      stsOrLandfillNum: stsOrLandfillNum,
     };
 
     if (update === 0) {
@@ -39,6 +43,7 @@ export const UserForm = ({ update = 0, user = {} }) => {
       setUserType("Unassigned");
       setPhone("");
       setEmail("");
+      setStsOrLandfillNum("");
       toggleAddUserView();
       alert("User Create Successfully");
     } else if (update === 1) {
@@ -201,6 +206,24 @@ export const UserForm = ({ update = 0, user = {} }) => {
                     onChange={(e) => setEmail(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                     placeholder="Type user Email"
+                    required
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label
+                    htmlFor="stsOrLandfillNum"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
+                    STS or Landfill Number
+                  </label>
+                  <input
+                    type="text"
+                    name="stsOrLandfillNum"
+                    id="stsOrLandfillNum"
+                    value={stsOrLandfillNum}
+                    onChange={(e) => setStsOrLandfillNum(e.target.value)}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                    placeholder="Type STS or Landfill number"
                     required
                   />
                 </div>

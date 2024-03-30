@@ -1,65 +1,74 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
-import { postUser } from "../../redux/slices/usersSlice";
 import { useDispatch } from "react-redux";
+
 import UpdateIcon from "@mui/icons-material/Update";
-import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
+import AddRoadTwoToneIcon from "@mui/icons-material/AddRoadTwoTone";
+import { postPermission, updatePermission } from "../../redux/slices/permissionSlice";
 
-export const PermissionForm = ({ update = 0, user = {} }) => {
-  console.log(user, update);
-  const [viewUserModel, setViewUserModel] = useState(false);
+export const PermissionForm = ({ update = 0, data = {} }) => {
+  const [viewPermissionModel, setViewPermissionModel] = useState(false);
+
   const dispatch = useDispatch();
-  const [permissionName, setPermissionName] = useState(
-    update ? user.permissionName : ""
-  );
-
-  const [details, setDetails] = useState(update ? user.details : "");
+  const [name, setName] = useState(update ? data?.name : "");
+  const [details, setDetails] = useState(update ? data?.details : "");
 
   const toggleAddView = () => {
-    setViewUserModel(!viewUserModel);
+    document.body.style.overflow = viewPermissionModel ? "auto" : "hidden";
+    setViewPermissionModel(!viewPermissionModel);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const userData = {
-      permissionName: permissionName,
+    const permissionData = {
+      name: name,
       details: details,
     };
 
-    dispatch(postUser(userData));
-
-    setPermissionName("");
-    setDetails("");
+    if (update === 0) {
+      dispatch(postPermission(permissionData));
+      setName("");
+      setDetails("");
+    } else if (update === 1) {
+      dispatch(
+        updatePermission({
+          permissionId: data._id,
+          permissionData: permissionData,
+        })
+      );
+    }
     toggleAddView();
   };
 
   return (
     <div>
-      <div className="fixed w-1/4 ">
+      <div className="fixed w-1/4  pr-10">
         {update ? (
-          <Button
-            variant="contained"
-            startIcon={<UpdateIcon />}
-            className="w-auto"
-            onClick={toggleAddView}
-          >
-            Update Permission
-          </Button>
+          <>
+            <Button
+              variant="contained"
+              startIcon={<UpdateIcon />}
+              className="w-auto"
+              onClick={toggleAddView}
+            >
+              Update Permission
+            </Button>
+          </>
         ) : (
           <Button
             variant="contained"
             className="w-full"
-            startIcon={<PersonAddAlt1OutlinedIcon />}
+            startIcon={<AddRoadTwoToneIcon />}
             onClick={toggleAddView}
           >
-            Permission
+            Add Permission
           </Button>
         )}
       </div>
 
-      {viewUserModel && (
-        <div className="z-20 fixed top-0 right-0 bottom-0 left-0 z-100 flex justify-center items-center bg-gray-800 bg-opacity-50">
+      {viewPermissionModel && (
+        <div className="z-20  fixed top-0 right-0 bottom-0 left-0 z-100 flex justify-center items-center bg-gray-800 bg-opacity-50">
           <div
             style={{
               maxHeight: "calc(100vh - 20px)",
@@ -67,11 +76,11 @@ export const PermissionForm = ({ update = 0, user = {} }) => {
               width: "80%",
               maxWidth: "800px",
             }}
-            className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md"
+            className=" bg-white rounded-lg shadow-lg p-6 max-h-full overflow-y-auto "
           >
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-gray-900">
-                {update ? "Update Permission" : "Add new Permission"}
+                {update ? "Update Permission" : "Add New Permission"}
               </h3>
               <button
                 type="button"
@@ -100,45 +109,43 @@ export const PermissionForm = ({ update = 0, user = {} }) => {
               <div className="grid gap-4 mb-4 grid-cols-2">
                 <div className="col-span-2">
                   <label
-                    htmlFor="permissionName"
+                    htmlFor="name"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
                     Permission Name
                   </label>
                   <input
                     type="text"
-                    name="permissionName"
-                    id="permissionName"
-                    value={permissionName}
-                    onChange={(e) => setPermissionName(e.target.value)}
+                    name="name"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Type permission name"
+                    placeholder="Enter permission name"
                     required
                   />
                 </div>
-
-               
                 <div className="col-span-2">
                   <label
                     htmlFor="details"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    permission Details
+                    Permission Details
                   </label>
-                  <input
-                    type="text"
-                    name="details"
+                  <textarea
                     id="details"
+                    name="details"
                     value={details}
                     onChange={(e) => setDetails(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Type details"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 resize-none"
+                    placeholder="Enter permission details"
+                    rows="4"
                     required
-                  />
+                  ></textarea>
                 </div>
               </div>
               <Button variant="contained" className="w-full" type="submit">
-                {update ? "Update Permission" : "Add new Permission"}
+                {update ? "Update Permission" : "Add Permission"}
               </Button>
             </form>
           </div>

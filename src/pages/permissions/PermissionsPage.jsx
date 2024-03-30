@@ -1,36 +1,33 @@
-import * as React from "react";
-
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getPermissions } from "../../redux/slices/permissionSlice";
 import { PermissionForm } from "./PermissionForm";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-
-import { useEffect } from "react";
 import PermissionCard from "./PermissionCard";
-import { getPermissions } from "./../../redux/slices/permissionSlice";
 
 export const PermissionsPage = () => {
-  const dispatch = useDispatch();
+  const permissionsData = useSelector((state) => state.permissions);
+  const permissions = permissionsData.data;
 
-  const data = useSelector((state) => state.permissions);
-  const permissions = data?.data || [];;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getPermissions());
   }, [dispatch]);
 
   return (
-    <div className="w-screen flex">
-      <div className=" w-1/4 p-5">
+    <div className="flex w-full">
+      <div className="w-1/4 p-5">
         <PermissionForm />
       </div>
-      <div className=" w-3/4 p-5">
-        {permissions.map((value) => {
-          return (
-            <div className=" w-full mb-1 pr-3">
-              <PermissionCard permission={value} />;
-            </div>
-          );
-        })}
+      <div className="w-3/4 pl-10">
+        <div className="mt-5 mb-10 text-3xl font-bold tracking-tight">
+          Permissions Management
+        </div>
+        {permissions.map((permission) => (
+          <div className="p-2" key={permission.id}>
+            <PermissionCard permission={permission} />
+          </div>
+        ))}
       </div>
     </div>
   );

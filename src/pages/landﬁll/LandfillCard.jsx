@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import MyMap from "./../../components/MyMap";
+import { Button } from "@mui/material";
+import ReadMoreOutlinedIcon from "@mui/icons-material/ReadMoreOutlined";
 
 export default function LandfillCard({ landfill }) {
   console.log(landfill);
@@ -22,9 +24,13 @@ export default function LandfillCard({ landfill }) {
             <h4 class="mb-1">Landfill Manager Id: {landfill.userId}</h4>
           </b>
           <Link to={`/landfills/${landfill._id}`}>
-            <div class="text-sm w-28 rounded-sm text-blue-800 bg-gray-300 hover:bg-blue-700 hover:text-white   text-center">
-              <b>More Info</b>
-            </div>
+            <Button
+              variant="contained"
+              className="w-24"
+              endIcon={<ReadMoreOutlinedIcon />}
+            >
+              More
+            </Button>
           </Link>
         </div>
       </div>
