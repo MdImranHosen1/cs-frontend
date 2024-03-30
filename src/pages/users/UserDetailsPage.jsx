@@ -4,6 +4,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Button } from "@mui/material";
 import { getUserById, deleteUserById } from "../../redux/slices/usersSlice";
+import Box from "@mui/material/Box";
+import LinearProgress from "@mui/material/LinearProgress";
 import { UserForm } from "./UserForm";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 
@@ -12,19 +14,27 @@ export const UserDetailsPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const user = useSelector((state) => state.users.data[0]);
+
   useEffect(() => {
     dispatch(getUserById(userId));
   }, [dispatch, userId]);
 
-  const user = useSelector((state) => state.users.data[0]); // Assuming single user data
-  const loading = useSelector((state) => state.users.loading);
-  const error = useSelector((state) => state.users.error);
+  
+  if ( !user) {
+    return (
+      <div>
+        <Box sx={{ width: "100%" }}>
+          <LinearProgress />
+        </Box>
+      </div>
+    ); 
+  }
 
   const onDeleteUser = () => {
     const isConfirmed = window.confirm("Do you want to delete the user?");
     if (isConfirmed) {
       dispatch(deleteUserById(userId)).then(() => {
-        // Redirect to user list page after deletion
         navigate("/users");
       });
     }
