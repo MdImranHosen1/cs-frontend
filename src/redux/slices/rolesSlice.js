@@ -7,7 +7,7 @@ export const getRoles = createAsyncThunk('rbac/roles/getRoles', async () => {
 });
 
 export const postRole = createAsyncThunk('rbac/roles/postRoles', async (role) => {
- 
+
     const response = await axios.post('http://localhost:3000/rbac/roles', role);
 
     return response.data;

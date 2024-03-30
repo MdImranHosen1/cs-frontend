@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
-import { postUser } from "../../redux/slices/usersSlice";
+
 import { useDispatch } from "react-redux";
 import UpdateIcon from "@mui/icons-material/Update";
 import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
+import { postRole } from "../../redux/slices/rolesSlice";
 
 export const RoleForm = ({ update = 0, user = {} }) => {
   console.log(user, update);
@@ -34,7 +35,7 @@ export const RoleForm = ({ update = 0, user = {} }) => {
     };
     console.log(userData);
 
-    dispatch(postUser(userData));
+    dispatch(postRole(userData));
     // submitData(userData);
 
     setName("");

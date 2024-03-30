@@ -19,6 +19,8 @@ import { LandfillPage } from './pages/landﬁll/LandfillPage';
 import { LandfillDetailsPage } from "./pages/landﬁll/LandfillDetailsPage";
 import { PermissionsPage } from "./pages/permissions/PermissionsPage";
 import { PermissionDetailsPage } from './pages/permissions/PermissionDetailsPage';
+import { RolesPage } from './pages/roles/RolesPage';
+import { RoleDetailsPage } from './pages/roles/RoleDetailsPage';
 
 
 function App() {
@@ -65,6 +67,10 @@ function App() {
         {/* permission */}
         <Route exact path="/rbac/permissions/" element={<PermissionsPage />} />
         <Route exact path="/rbac/permissions/:id" element={<PermissionDetailsPage />} />
+
+        {/* role */}
+        {/* <Route exact path="/rbac/roles/" element={<RolesPage />} />
+        <Route exact path="/rbac/roles/:id" element={<RoleDetailsPage />} /> */}
 
 
 

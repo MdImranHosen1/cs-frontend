@@ -7,6 +7,7 @@ import { Button } from "@mui/material";
 import UpdateIcon from "@mui/icons-material/Update";
 
 import { StsFromVehiclesTrans } from "./StsFromVehiclesTrans";
+import MyMap from "./../../components/MyMap";
 
 export const StsDetailsPage = () => {
   const { userId } = useParams();
@@ -40,11 +41,8 @@ export const StsDetailsPage = () => {
   return (
     <div>
       <div className=" flex w-full p-10 h-full ">
-        <div className="rounded-md w-1/4 p-5 bg-sky-500 h-full">
-          <img className=" rounded-lg" src={profileImg1} alt=""></img>
-          <h1 className=" mt-5 font-semibold text-lg text-center ">
-            Name: {user.userName}
-          </h1>
+        <div className="rounded-md w-1/2 ">
+          <MyMap />
         </div>
         <div className=" w-3/4 p-5">
           <h1 className=" font-bold text-2xl ml-5">About </h1>
@@ -69,7 +67,7 @@ export const StsDetailsPage = () => {
       <div>
         <div className=" flex w-full p-10 h-full ">
           <div className="rounded-md w-1/4 p-5h-full">
-            <StsFromVehiclesTrans/>
+            <StsFromVehiclesTrans />
           </div>
           <div className=" w-3/4 p-5"></div>
         </div>

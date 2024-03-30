@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import profileImg1 from "./../../assets/user.png";
 import { Link, useParams } from "react-router-dom";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
-import { UserForm } from "./RoleForm";
+
 import { Button } from "@mui/material";
+import { RoleForm } from "./RoleForm";
 
 export const RoleDetailsPage = () => {
   const { userId } = useParams();
@@ -58,7 +59,7 @@ export const RoleDetailsPage = () => {
             <h4 className="mb-1">Roles :{user.userRoles}</h4>
           </b>
 
-          <UserForm update={1} user={user} />
+          <RoleForm update={1} user={user} />
 
           <div className=" ml-44">
             <Button

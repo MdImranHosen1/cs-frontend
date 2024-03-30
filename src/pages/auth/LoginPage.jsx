@@ -1,4 +1,4 @@
-import { useEffect, React, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,11 +13,8 @@ import Container from "@mui/material/Container";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
-import { useNavigate } from "react-router-dom";
-
 import { loginUser, logout } from "./../../redux/slices/userHandleSlice";
 
 const defaultTheme = createTheme();
@@ -25,29 +22,33 @@ const defaultTheme = createTheme();
 export const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [warning, setWarning] = useState(false);
+  const [showWarning, setShowWarning] = useState(false);
+  const [warningMessage, setWarningMessage] = useState("");
   const userValidity = useSelector(
     (state) => state.userType?.userData?.userType
   );
   const userId = useSelector((state) => state.userType?.userData?.id);
-
   useEffect(() => {
     if (userValidity) {
       if (userValidity === "admin") {
         navigate("/");
       } else if (userValidity === "STS Manager") {
-        navigate("/sts/userId");
+        navigate(`/sts/${userId}`);
       } else if (userValidity === "Landfill Manager") {
-        navigate("/sts/userId");
+        navigate(`/sts/${userId}`);
       } else {
         dispatch(logout());
-        setWarning(true);
-        setTimeout(setWarning(false), 5000);
+        setWarningMessage("Wrong email or password!");
+        setShowWarning(true);
+        // Hide the warning after 5 seconds
+        setTimeout(() => {
+          setShowWarning(false);
+        }, 2000);
       }
     }
   }, [userValidity]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const userName = data.get("email");
@@ -58,17 +59,28 @@ export const LoginPage = () => {
       userPassword: password,
     };
 
-    const response = dispatch(loginUser(userData));
-
-    
+    try {
+      const response = await dispatch(loginUser(userData));
+      if (response.type === "auth/login/fulfilled") {
+        console.log("Login successful");
+      } else {
+        setWarningMessage("Wrong email or password!");
+        setShowWarning(true);
+        setTimeout(() => {
+          setShowWarning(false);
+        }, 2000);
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+    }
   };
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      {warning && (
-        <Stack sx={{ width: "100%" }} spacing={2}>
+      {showWarning && (
+        <Stack sx={{ width: "100%" }} className=" fixed" spacing={2}>
           <Alert variant="filled" severity="error">
-            Wrong email or password!
+            {warningMessage}
           </Alert>
         </Stack>
       )}

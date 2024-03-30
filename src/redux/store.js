@@ -5,6 +5,7 @@ import stsReducer from './slices/stsSlice'
 import userHandleReducer from './slices/userHandleSlice'
 import  landfillReducer  from './slices/landfullSlice';
 import permissionReducer from './slices/permissionSlice'
+import rolesReducer from './slices/rolesSlice'
 
 
 
@@ -15,6 +16,7 @@ export default configureStore({
         sts: stsReducer,
         userType: userHandleReducer,
         landfill: landfillReducer,
-        permission: permissionReducer
+        permission: permissionReducer,
+        role: rolesReducer,
     },
 })

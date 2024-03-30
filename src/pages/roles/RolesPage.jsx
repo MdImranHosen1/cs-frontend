@@ -10,7 +10,7 @@ export const RolesPage = () => {
   const dispatch = useDispatch();
 
   const data = useSelector((state) => state.roles);
-  const users = data.data;
+  const users = data?.data;
 
   useEffect(() => {
     dispatch(getRoles());
