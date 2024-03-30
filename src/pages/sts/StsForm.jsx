@@ -6,8 +6,6 @@ import UpdateIcon from "@mui/icons-material/Update";
 import AddRoadTwoToneIcon from "@mui/icons-material/AddRoadTwoTone";
 
 export const StsForm = ({ update = 0, data = {} }) => {
-
-
   const [viewStsModel, setViewStsModel] = useState(false);
   const dispatch = useDispatch();
   const [stsName, setStsName] = useState(update ? data?.stsName : "");
@@ -18,40 +16,39 @@ export const StsForm = ({ update = 0, data = {} }) => {
     update ? data?.managers.join(", ") : ""
   );
 
-   const toggleAddView = () => {
-     setViewStsModel(!viewStsModel);
-   };
+  const toggleAddView = () => {
+    setViewStsModel(!viewStsModel);
+  };
 
-   const handleSubmit = (event) => {
-     event.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-     const stsData = {
-       stsName: stsName,
-       wardNum: wardNum,
-       capacity: capacity,
-       coordinate: coordinate,
-       managers: [managers],
-     };
+    const stsData = {
+      stsName: stsName,
+      wardNum: wardNum,
+      capacity: capacity,
+      coordinate: coordinate,
+      managers: [managers],
+    };
 
-     if (update === 0) {
-       dispatch(postSts(stsData));
-       setStsName("");
-       setWardNum("");
-       setCapacity("");
-       setCoordinate("");
-       setManagers("");
-     } else if (update === 1) {
+    if (update === 0) {
+      dispatch(postSts(stsData));
+      setStsName("");
+      setWardNum("");
+      setCapacity("");
+      setCoordinate("");
+      setManagers("");
+    } else if (update === 1) {
       console.log({ stsId: data._id, stsData: stsData });
-       dispatch(updateSts({ stsId: data._id, stsData: stsData }));
-     }
+      dispatch(updateSts({ stsId: data._id, stsData: stsData }));
+    }
 
-     
-     toggleAddView();
-   };
+    toggleAddView();
+  };
 
   return (
     <div>
-      <div className="fixed ">
+      <div className="fixed w-1/4 ">
         {update ? (
           <>
             <Button

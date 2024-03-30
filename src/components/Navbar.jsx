@@ -22,7 +22,7 @@ let pagesLink = [
   "/users",
   "/vehicles",
   "/sts",
-  "/landfill",
+  "/landfills",
   "/rbac/roles",
   "/rbac/permissions",
 ];

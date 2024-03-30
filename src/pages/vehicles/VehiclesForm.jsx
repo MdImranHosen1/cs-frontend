@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
-import {
-  postVehicle,
-  updateVehicle,
-} from "../../redux/slices/vehiclesSlice";
+import { postVehicle, updateVehicle } from "../../redux/slices/vehiclesSlice";
 import UpdateIcon from "@mui/icons-material/Update";
 import AddRoadTwoToneIcon from "@mui/icons-material/AddRoadTwoTone";
 
@@ -46,7 +43,7 @@ export const VehiclesForm = ({ update = 0, data = {} }) => {
       setCostLoaded("");
       setCostUnloaded("");
       setStsNum("");
-    } else  if (update === 1) {
+    } else if (update === 1) {
       dispatch(
         updateVehicle({ vehicleId: data._id, vehicleData: vehicleData })
       );
@@ -56,7 +53,7 @@ export const VehiclesForm = ({ update = 0, data = {} }) => {
 
   return (
     <div>
-      <div className="fixed ">
+      <div className="fixed w-1/4  pr-10">
         {update ? (
           <>
             <Button

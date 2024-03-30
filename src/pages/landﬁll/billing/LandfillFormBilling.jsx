@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { postVehicle } from "../../redux/slices/vehiclesSlice";
+import { postVehicle } from "../../../redux/slices/vehiclesSlice";
 import UpdateIcon from "@mui/icons-material/Update";
 import NoteAddIcon from "@mui/icons-material/NoteAdd";
 

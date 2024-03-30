@@ -6,7 +6,6 @@ import UpdateIcon from "@mui/icons-material/Update";
 import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
 
 export const UserForm = ({ update = 0, user = {} }) => {
-
   const [viewUserModel, setViewUserModel] = useState(false);
   const dispatch = useDispatch();
   const [name, setName] = useState(update ? user?.userName : "");
@@ -56,7 +55,7 @@ export const UserForm = ({ update = 0, user = {} }) => {
           <Button
             variant="contained"
             startIcon={<UpdateIcon />}
-            className="w-auto"
+            className="w-full"
             onClick={toggleAddUserView}
           >
             Update User

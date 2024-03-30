@@ -1,73 +1,79 @@
-import React, { useEffect, useState } from "react";
-import profileImg from "../../assets/profile1.png";
-import profileImg1 from "./../../assets/user.png";
-import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { Button } from "@mui/material";
-import UpdateIcon from "@mui/icons-material/Update";
-import { LandfillFormBilling } from "./LandfillFormBilling";
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
+import Box from "@mui/material/Box";
+import LinearProgress from "@mui/material/LinearProgress";
+
 import MyMap from "./../../components/MyMap";
+import {
+  deleteLandfillById,
+  getLandfillById,
+} from "../../redux/slices/landfullSlice";
+import { LandfillForm } from "./LandfillForm";
 
 export const LandfillDetailsPage = () => {
-  const { userId } = useParams();
-  const [landfill, setlandfill] = useState({
-    lfId: 1,
-    capacity: 500,
-    coordinate: "40.7128° N, 74.0060° W",
-    operationTimespan: "Mon-Fri 8AM-6PM",
-    userId: 1,
-  });
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [viewStsModel, setViewStsModel] = useState(false);
-  const toggleAddStsView = () => {
-    setViewStsModel(!viewStsModel);
+  const data = useSelector((state) => state.landfill.data[0]);
+  
+  useEffect(() => {
+    dispatch(getLandfillById(id));
+  }, [dispatch, id, data]);
+
+  if (!data) {
+    return (
+      <div>
+        <Box sx={{ width: "100%" }}>
+          <LinearProgress />
+        </Box>
+      </div>
+    );
+  }
+
+  const onDeleteData = () => {
+    const isConfirmed = window.confirm("Do you want to delete the landfill?");
+    if (isConfirmed) {
+      dispatch(deleteLandfillById(id)).then(() => {
+        navigate("/landfills");
+      });
+    }
   };
 
-  // const getUserData=async()=>{
-  //   const response = await axios.get('http://localhost:5000/users');
-  //   setData(response.data);
-  // }
-
-  // useEffect(() => {
-  //   getUserData();
-  //
-
-  // }, []);
-
   return (
-    <div>
-      <div className=" flex w-full p-10 h-full ">
-        <div className="rounded-md w-1/2 ">
-          <MyMap />
-        </div>
-        <div className=" w-3/4 p-5">
-          <h1 className=" font-bold text-2xl ml-5">About </h1>
-          <div className="p-6  ">
-            <b>
-              <h1 class="mb-1">Landfill Id: {landfill.lfId}</h1>
-              <h4 class="mb-1">Capacity: {landfill.capacity}</h4>
-              <h4 class="mb-1">Coordinate Number: {landfill.coordinate}</h4>
-              <h4 class="mb-1">
-                Operation Timespan: {landfill.operationTimespan}
-              </h4>
-              <h4 class="mb-1">Landfill Manager Id: {landfill.userId}</h4>
-            </b>
+    <div className="flex w-full p-10 h-full">
+      <div className="rounded-md w-1/4 p-5 bg-sky-500 h-full">
+        <MyMap />
+      </div>
+      <div className="w-3/4 p-5">
+        <h1 className="font-bold text-2xl ml-5">About</h1>
+        <div className="p-6">
+          <b>
+            <h1 className="mb-1">Name: {data.name}</h1>
+            <h4 className="mb-1">LfId: {data.lfId}</h4>
+            <h4 className="mb-1">Capacity: {data.capacity}</h4>
+            <h4 className="mb-1">Coordinate: {data.coordinate}</h4>
+            <h4 className="mb-1">
+              Operation Timespan: {data.operationTimespan}
+            </h4>
+            <h4 className="mb-1">Manager Id: {data.managerId}</h4>
+          </b>
+
+          <LandfillForm update={1} data={data} />
+
+          <div className="ml-44">
             <Button
               variant="contained"
-              startIcon={<UpdateIcon />}
-              onClick={toggleAddStsView}
+              color="error"
+              onClick={onDeleteData}
+              startIcon={<DeleteForeverOutlinedIcon />}
             >
-              Update Landfill
+              Delete Landfill
             </Button>
           </div>
-        </div>
-      </div>
-      <div>
-        <div className=" flex w-full p-10 h-full ">
-          <div className="rounded-md w-1/4 p-5h-full">
-            <LandfillFormBilling />
-          </div>
-          <div className=" w-3/4 p-5"></div>
         </div>
       </div>
     </div>

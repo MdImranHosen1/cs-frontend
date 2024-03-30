@@ -46,15 +46,13 @@ export const deleteLandfillById = createAsyncThunk('users/deleteLandfillById', a
 
 
 const initialState = {
-    data: [
-
-    ],
+    data: [],
     loading: 'idle',
     error: null,
 };
 
 export const landfillsSlice = createSlice({
-    name: 'landfills',
+    name: 'landfill',
     initialState,
     reducers: {},
     extraReducers: (builder) => {

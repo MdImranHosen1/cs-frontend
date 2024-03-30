@@ -61,8 +61,8 @@ function App() {
         <Route exact path="/sts/:id" element={<StsDetailsPage />} />
 
         {/* Landfill */}
-        <Route exact path="/landfill" element={<LandfillPage />} />
-        <Route exact path="/Landfill/:id" element={<LandfillDetailsPage />} />
+        <Route exact path="/landfills" element={<LandfillPage />} />
+        <Route exact path="/Landfills/:id" element={<LandfillDetailsPage />} />
 
         {/* permission */}
         <Route exact path="/rbac/permissions/" element={<PermissionsPage />} />
