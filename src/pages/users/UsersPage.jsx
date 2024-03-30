@@ -26,7 +26,7 @@ export const UsersPage = () => {
         {users.map((value) => {
           return (
             <div className=" w-full mb-1 pr-3">
-              <UserCard users={value} />;
+              <UserCard users={value} />
             </div>
           );
         })}

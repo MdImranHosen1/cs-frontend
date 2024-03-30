@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import profileImg from "../../assets/profile1.png";
-import profileImg1 from "./../../assets/user.png";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button } from "@mui/material";

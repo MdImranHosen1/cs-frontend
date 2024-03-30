@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
-import { postUser } from "../../redux/slices/usersSlice";
+import { postUser, updateUser } from "../../redux/slices/usersSlice";
 import { useDispatch } from "react-redux";
 import UpdateIcon from "@mui/icons-material/Update";
 import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
@@ -21,33 +21,39 @@ export const UserForm = ({ update = 0, user = {} }) => {
     setViewUserModel(!viewUserModel);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+const handleSubmit = (event) => {
+  event.preventDefault();
 
-    const userData = {
-      userName: name,
-      userPassword: password,
-      userType: userType,
-      userRoles: [],
-      userPhone: phone,
-      userEmail: email,
-    };
-    console.log(userData);
-
-    dispatch(postUser(userData));
-    // submitData(userData);
-
-    // setName("");
-    // setPassword("");
-    // setUserType("Unassigned");
-    // setPhone("");
-    // setEmail("");
-    // toggleAddUserView();
+  const userData = {
+    userName: name,
+    userPassword: password,
+    userType: userType,
+    userRoles: [],
+    userPhone: phone,
+    userEmail: email,
   };
+
+  if (update === 0)
+  {
+dispatch(postUser(userData));
+setName("");
+setPassword("");
+setUserType("Unassigned");
+setPhone("");
+setEmail("");
+
+  }
+  else if (update === 1) {
+   dispatch(updateUser({ userId: user._id, userData: userData }));
+
+  }
+toggleAddUserView();
+};
+
 
   return (
     <div>
-      <div className="fixed w-1/4 pr-10">
+      <div className="fixed w-1/4">
         {update ? (
           <Button
             variant="contained"

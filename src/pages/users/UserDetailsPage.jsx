@@ -1,43 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import profileImg1 from "./../../assets/user.png";
-import { Link, useParams } from "react-router-dom";
-import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
-import { UserForm } from "./UserForm";
+import { useParams, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { Button } from "@mui/material";
+import { getUserById, deleteUserById } from "../../redux/slices/usersSlice";
+import { UserForm } from "./UserForm";
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 
 export const UserDetailsPage = () => {
   const { userId } = useParams();
-  const [user, setUser] = useState({
-    userId: 1,
-    userType: "Type1",
-    userName: "user1",
-    userPassword: "pass123",
-    userRoles: ["role1", "role2"],
-    userPhone: "1234567890",
-    userEmail: "user1@example.com",
-  });
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [viewStsModel, setViewStsModel] = useState(false);
+  useEffect(() => {
+    dispatch(getUserById(userId));
+  }, [dispatch, userId]);
 
-  // const getUserData=async()=>{
-  //   const response = await axios.get('http://localhost:5000/users');
-  //   setData(response.data);
-  // }
+  const user = useSelector((state) => state.users.data[0]); // Assuming single user data
+  const loading = useSelector((state) => state.users.loading);
+  const error = useSelector((state) => state.users.error);
 
-  // useEffect(() => {
-  //   getUserData();
-  //
-
-  // }, []);
-
-const onDeleteUser = () => {
-  const isConfirmed = window.confirm("Do you want to delete the user?");
-  if (isConfirmed) {
-    // Proceed with user deletion
-  } else {
-    // User cancelled deletion
-  }
-};
+  const onDeleteUser = () => {
+    const isConfirmed = window.confirm("Do you want to delete the user?");
+    if (isConfirmed) {
+      dispatch(deleteUserById(userId)).then(() => {
+        // Redirect to user list page after deletion
+        navigate("/users");
+      });
+    }
+  };
 
   return (
     <div className=" flex w-full p-10 h-full ">
@@ -63,7 +54,6 @@ const onDeleteUser = () => {
           <div className=" ml-44">
             <Button
               variant="contained"
-              className="w-40"
               color="error"
               onClick={onDeleteUser}
               startIcon={<DeleteForeverOutlinedIcon />}
