@@ -1,76 +1,63 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
-
 import { useDispatch } from "react-redux";
-import UpdateIcon from "@mui/icons-material/Update";
-import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
-import { postRole } from "../../redux/slices/rolesSlice";
+import { postSts } from "../../redux/slices/stsSlice";
 
-export const RoleForm = ({ update = 0, user = {} }) => {
-  console.log(user, update);
-  const [viewUserModel, setViewUserModel] = useState(false);
+export const RolesForm = () => {
+  const [viewStsModel, setViewStsModel] = useState(false);
   const dispatch = useDispatch();
-  const [name, setName] = useState(update ? user.userName : "");
-  const [password, setPassword] = useState(update ? user.userPassword : "");
-  const [userType, setUserType] = useState(
-    update ? user.userName : "Unassigned"
-  );
-  const [phone, setPhone] = useState(update ? user.userPhone : "");
-  const [email, setEmail] = useState(update ? user.userEmail : "");
+  const [stsName, setStsName] = useState("");
+  const [wardNum, setWardNum] = useState("");
+  const [capacity, setCapacity] = useState("");
+  const [coordinate, setCoordinate] = useState("");
+  const [operationTimespan, setOperationTimespan] = useState("");
+  const [managers, setManagers] = useState("");
+  const [landfillId, setLandfillId] = useState(""); // Assuming this is fetched from another table
 
-  const toggleAddUserView = () => {
-    setViewUserModel(!viewUserModel);
+  const toggleAddStsView = () => {
+    setViewStsModel(!viewStsModel);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const userData = {
-      userName: name,
-      userPassword: password,
-      userType: userType,
-      userRoles: [],
-      userPhone: phone,
-      userEmail: email,
+    const stsData = {
+      landfillId: landfillId,
+      stsName: stsName,
+      wardNum: wardNum,
+      capacity: capacity,
+      coordinate: coordinate,
+      operationTimespan: operationTimespan,
+      managers: [managers],
     };
-    console.log(userData);
+    console.log(stsData);
 
-    dispatch(postRole(userData));
-    // submitData(userData);
+    dispatch(postSts(stsData));
 
-    setName("");
-    setPassword("");
-    setUserType("Unassigned");
-    setPhone("");
-    setEmail("");
-    toggleAddUserView();
+    // Resetting the form fields
+    setStsName("");
+    setWardNum("");
+    setCapacity("");
+    setCoordinate("");
+    setOperationTimespan("");
+    setManagers("");
+    setLandfillId("");
+    toggleAddStsView();
   };
 
   return (
     <div>
       <div className="fixed w-1/4 pr-10">
-        {update ? (
-          <Button
-            variant="contained"
-            startIcon={<UpdateIcon />}
-            className="w-auto"
-            onClick={toggleAddUserView}
-          >
-            Update User
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-            className="w-full"
-            startIcon={<PersonAddAlt1OutlinedIcon />}
-            onClick={toggleAddUserView}
-          >
-            Add User
-          </Button>
-        )}
+        <Button
+          variant="contained"
+          className="w-full"
+          onClick={toggleAddStsView}
+        >
+          Add Landfill
+        </Button>
       </div>
 
-      {viewUserModel && (
+      {viewStsModel && (
         <div className="z-20 fixed top-0 right-0 bottom-0 left-0 z-100 flex justify-center items-center bg-gray-800 bg-opacity-50">
           <div
             style={{
@@ -83,12 +70,12 @@ export const RoleForm = ({ update = 0, user = {} }) => {
           >
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-gray-900">
-                {update ? "Update User" : "Add new users"}
+                Add new Landfill
               </h3>
               <button
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8"
-                onClick={toggleAddUserView}
+                onClick={toggleAddStsView}
               >
                 <svg
                   className="w-3 h-3"
@@ -112,99 +99,97 @@ export const RoleForm = ({ update = 0, user = {} }) => {
               <div className="grid gap-4 mb-4 grid-cols-2">
                 <div className="col-span-2">
                   <label
-                    htmlFor="name"
+                    htmlFor="stsName"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Name
+                    Landfill Name
                   </label>
                   <input
                     type="text"
-                    name="name"
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    name="stsName"
+                    id="stsName"
+                    value={stsName}
+                    onChange={(e) => setStsName(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Type user name"
+                    placeholder="Landfill name"
                     required
                   />
                 </div>
                 <div className="col-span-2">
                   <label
-                    htmlFor="password"
+                    htmlFor="capacity"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Password
+                    Landfill Capacity
                   </label>
                   <input
                     type="text"
-                    name="password"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    name="capacity"
+                    id="capacity"
+                    value={capacity}
+                    onChange={(e) => setCapacity(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Type user password"
-                    required
-                  />
-                </div>
-
-                <div className="col-span-2">
-                  <label
-                    htmlFor="userType"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    User type
-                  </label>
-                  <select
-                    id="userType"
-                    name="userType"
-                    value={userType}
-                    onChange={(e) => setUserType(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
-                  >
-                    <option value="Unassigned">Unassigned</option>
-                    <option value="Landfill Manager">Landfill Manager</option>
-                    <option value="STS Manager">STS Manager</option>
-                  </select>
-                </div>
-                <div className="col-span-2">
-                  <label
-                    htmlFor="phone"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Phone number
-                  </label>
-                  <input
-                    type="text"
-                    name="phone"
-                    id="phone"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Type user phone number"
+                    placeholder="Landfill capacity"
                     required
                   />
                 </div>
                 <div className="col-span-2">
                   <label
-                    htmlFor="email"
+                    htmlFor="coordinate"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Email
+                    Landfill Coordinate
                   </label>
                   <input
                     type="text"
-                    name="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    name="coordinate"
+                    id="coordinate"
+                    value={coordinate}
+                    onChange={(e) => setCoordinate(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Type user Email"
+                    placeholder="Landfill coordinate"
+                    required
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label
+                    htmlFor="operationTimespan"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
+                    Landfill Operation Timespan
+                  </label>
+                  <input
+                    type="time"
+                    name="operationTimespan"
+                    id="operationTimespan"
+                    value={operationTimespan}
+                    onChange={(e) => setOperationTimespan(e.target.value)}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                    placeholder="Landfill Operation Timespan"
+                    required
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label
+                    htmlFor="managers"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
+                    Land Managers
+                  </label>
+                  <input
+                    type="text"
+                    name="managers"
+                    id="managers"
+                    value={managers}
+                    onChange={(e) => setManagers(e.target.value)}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                    placeholder="Landfill managers"
                     required
                   />
                 </div>
               </div>
               <Button variant="contained" className="w-full" type="submit">
-                {update ? "Update User" : "Add new users"}
+                Add Landfill
               </Button>
             </form>
           </div>

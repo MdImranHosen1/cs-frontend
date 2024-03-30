@@ -9,47 +9,45 @@ export const UserForm = ({ update = 0, user = {} }) => {
   console.log(user, update);
   const [viewUserModel, setViewUserModel] = useState(false);
   const dispatch = useDispatch();
-  const [name, setName] = useState(update ? user.userName : "");
-  const [password, setPassword] = useState(update ? user.userPassword : "");
+  const [name, setName] = useState(update ? user?.userName : "");
+  const [password, setPassword] = useState(update ? user?.userPassword : "");
   const [userType, setUserType] = useState(
     update ? user.userName : "Unassigned"
   );
-  const [phone, setPhone] = useState(update ? user.userPhone : "");
-  const [email, setEmail] = useState(update ? user.userEmail : "");
+  const [phone, setPhone] = useState(update ? user?.userPhone : "");
+  const [email, setEmail] = useState(update ? user?.userEmail : "");
 
   const toggleAddUserView = () => {
     setViewUserModel(!viewUserModel);
   };
 
-const handleSubmit = (event) => {
-  event.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-  const userData = {
-    userName: name,
-    userPassword: password,
-    userType: userType,
-    userRoles: [],
-    userPhone: phone,
-    userEmail: email,
+    const userData = {
+      userName: name,
+      userPassword: password,
+      userType: userType,
+      userRoles: [],
+      userPhone: phone,
+      userEmail: email,
+    };
+
+    if (update === 0) {
+      dispatch(postUser(userData));
+      setName("");
+      setPassword("");
+      setUserType("Unassigned");
+      setPhone("");
+      setEmail("");
+      toggleAddUserView();
+      alert("User Create Successfully");
+    } else if (update === 1) {
+      dispatch(updateUser({ userId: user._id, userData: userData }));
+      toggleAddUserView();
+      alert("User Update Successfully");
+    }
   };
-
-  if (update === 0)
-  {
-dispatch(postUser(userData));
-setName("");
-setPassword("");
-setUserType("Unassigned");
-setPhone("");
-setEmail("");
-
-  }
-  else if (update === 1) {
-   dispatch(updateUser({ userId: user._id, userData: userData }));
-
-  }
-toggleAddUserView();
-};
-
 
   return (
     <div>
