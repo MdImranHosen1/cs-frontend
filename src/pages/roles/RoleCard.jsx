@@ -1,28 +1,33 @@
-import * as React from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import img from "./../../assets/user.png";
+import { Button } from "@mui/material";
+import ReadMoreOutlinedIcon from "@mui/icons-material/ReadMoreOutlined";
 
-export default function RoleCard({ landfill }) {
-//   console.log("hi",landfill);
+export const RoleCard = ({ role }) => {
   return (
-    <div class="  flex  items-center w-full  bg-white border border-gray-100 rounded-lg shadow   hover:bg-gray-200">
-      <div class="  w-full">
-        <div class="p-5">
+    <div className="flex items-center w-full bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-200">
+      <div className="ml-5 mr-5 rounded-md object-cover rounded-t-lg h-40 w-1/4">
+        {/* You can add an icon or an image related to the role here */}
+      </div>
+      <div className="flex flex-col justify-between leading-normal">
+        <div className="p-6">
           <b>
-            <h1 class="mb-1">Role Id: {landfill.lfId}</h1>
-            <h4 class="mb-1">Role: {landfill.capacity}</h4>
-            <h4 class="mb-1">Role Details: {landfill.coordinate}</h4>
-            <h4 class="mb-1">
-              Permission Assigning : {landfill.operationTimespan}
-            </h4>
+            <h4 className="mb-1">Role Name: {role.roleName}</h4>
+            <h4 className="mb-1">Role ID: {role.roleId}</h4>
+            <h4 className="mb-1">Role Details: {role.roleDetails}</h4>
+            <h4 className="mb-1">Role Assign: {role.roleAssign}</h4>
+            <Link to={`/roles/${role._id}`}>
+              <Button
+                variant="contained"
+                className="w-24"
+                endIcon={<ReadMoreOutlinedIcon />}
+              >
+                More
+              </Button>
+            </Link>
           </b>
-          <Link to={`/rbac/roles/${landfill.lfId}/permissions`}>
-            <div class="text-sm w-28 rounded-sm text-blue-800 bg-gray-300 hover:bg-blue-700 hover:text-white text-center">
-              <b>More Info</b>
-            </div>
-          </Link>
         </div>
       </div>
     </div>
   );
-}
+};

@@ -1,32 +1,33 @@
-import * as React from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { getLandfills } from "../../redux/slices/landfullSlice";
-import RoleCard from "./RoleCard";
-
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getRoles } from "../../redux/slices/rolesSlice";
+import { RoleForm } from "./RolesForm";
+import { RoleCard } from './RoleCard';
 
 
 export const RolesPage = () => {
+  const data = useSelector((state) => state.roles);
+  const roles = data.data;
+
   const dispatch = useDispatch();
 
-  const data = useSelector((state) => state.landfill);
-  const landfill = data.data;
-  console.log(landfill);
   useEffect(() => {
-    dispatch(getLandfills());
+    dispatch(getRoles());
   }, [dispatch]);
 
   return (
-    <div className="w-screen flex">
-      <div className=" w-1/4 p-5">
-        
+    <div className="flex w-full">
+      <div className="w-1/4 p-5">
+        <RoleForm />
       </div>
-      <div className=" w-3/4 p-5">
-        {landfill.map((value) => {
+      <div className="w-3/4">
+        <div className="mt-5 mb-10 text-3xl font-bold tracking-tight">
+          Roles in Dhaka North City Corporation
+        </div>
+        {roles.map((value) => {
           return (
-            <div className=" w-full mb-1 pr-3">
-              <RoleCard landfill={value} />
+            <div className="p-2" key={value._id}>
+              <RoleCard role={value} />
             </div>
           );
         })}

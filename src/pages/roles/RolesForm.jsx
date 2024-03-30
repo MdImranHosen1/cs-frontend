@@ -1,63 +1,70 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { postSts } from "../../redux/slices/stsSlice";
+import { postRole, updateRole } from "../../redux/slices/rolesSlice";
+import UpdateIcon from "@mui/icons-material/Update";
+import AddIcon from "@mui/icons-material/Add";
 
-export const RolesForm = () => {
-  const [viewStsModel, setViewStsModel] = useState(false);
+export const RoleForm = ({ update = 0, data = {} }) => {
+  const [viewRoleModel, setViewRoleModel] = useState(false);
+
   const dispatch = useDispatch();
-  const [stsName, setStsName] = useState("");
-  const [wardNum, setWardNum] = useState("");
-  const [capacity, setCapacity] = useState("");
-  const [coordinate, setCoordinate] = useState("");
-  const [operationTimespan, setOperationTimespan] = useState("");
-  const [managers, setManagers] = useState("");
-  const [landfillId, setLandfillId] = useState(""); // Assuming this is fetched from another table
+  const [roleName, setRoleName] = useState(update ? data?.roleName : "");
+  const [roleDetails, setRoleDetails] = useState(
+    update ? data?.roleDetails : ""
+  );
+  const [roleAssign, setRoleAssign] = useState(update ? data?.roleAssign : "");
 
-  const toggleAddStsView = () => {
-    setViewStsModel(!viewStsModel);
+  const toggleAddView = () => {
+    document.body.style.overflow = viewRoleModel ? "auto" : "hidden";
+    setViewRoleModel(!viewRoleModel);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const stsData = {
-      landfillId: landfillId,
-      stsName: stsName,
-      wardNum: wardNum,
-      capacity: capacity,
-      coordinate: coordinate,
-      operationTimespan: operationTimespan,
-      managers: [managers],
+    const roleData = {
+      roleName: roleName,
+      roleDetails: roleDetails,
+      roleAssign: roleAssign,
     };
-    console.log(stsData);
 
-    dispatch(postSts(stsData));
-
-    // Resetting the form fields
-    setStsName("");
-    setWardNum("");
-    setCapacity("");
-    setCoordinate("");
-    setOperationTimespan("");
-    setManagers("");
-    setLandfillId("");
-    toggleAddStsView();
+    if (update === 0) {
+      dispatch(postRole(roleData));
+      setRoleName("");
+      setRoleDetails("");
+      setRoleAssign("");
+    } else if (update === 1) {
+      dispatch(updateRole({ roleId: data._id, roleData: roleData }));
+    }
+    toggleAddView();
   };
 
   return (
     <div>
       <div className="fixed w-1/4 pr-10">
-        <Button
-          variant="contained"
-          className="w-full"
-          onClick={toggleAddStsView}
-        >
-          Add Landfill
-        </Button>
+        {update ? (
+          <Button
+            variant="contained"
+            startIcon={<UpdateIcon />}
+            className="w-auto"
+            onClick={toggleAddView}
+          >
+            Update Role
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            className="w-full"
+            startIcon={<AddIcon />}
+            onClick={toggleAddView}
+          >
+            Add Role
+          </Button>
+        )}
       </div>
 
-      {viewStsModel && (
+      {viewRoleModel && (
         <div className="z-20 fixed top-0 right-0 bottom-0 left-0 z-100 flex justify-center items-center bg-gray-800 bg-opacity-50">
           <div
             style={{
@@ -66,16 +73,16 @@ export const RolesForm = () => {
               width: "80%",
               maxWidth: "800px",
             }}
-            className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md"
+            className="bg-white rounded-lg shadow-lg p-6 max-h-full overflow-y-auto"
           >
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-gray-900">
-                Add new Landfill
+                {update ? "Update Role" : "Add New Role"}
               </h3>
               <button
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8"
-                onClick={toggleAddStsView}
+                onClick={toggleAddView}
               >
                 <svg
                   className="w-3 h-3"
@@ -96,100 +103,64 @@ export const RolesForm = () => {
               </button>
             </div>
             <form onSubmit={handleSubmit} className="p-4 md:p-5">
-              <div className="grid gap-4 mb-4 grid-cols-2">
-                <div className="col-span-2">
+              <div className="grid gap-4 mb-4 grid-cols-1">
+                <div>
                   <label
-                    htmlFor="stsName"
+                    htmlFor="roleName"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Landfill Name
+                    Role Name
                   </label>
                   <input
                     type="text"
-                    name="stsName"
-                    id="stsName"
-                    value={stsName}
-                    onChange={(e) => setStsName(e.target.value)}
+                    name="roleName"
+                    id="roleName"
+                    value={roleName}
+                    onChange={(e) => setRoleName(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Landfill name"
+                    placeholder="Enter role name"
                     required
                   />
                 </div>
-                <div className="col-span-2">
+                <div>
                   <label
-                    htmlFor="capacity"
+                    htmlFor="roleDetails"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Landfill Capacity
+                    Role Details
                   </label>
                   <input
                     type="text"
-                    name="capacity"
-                    id="capacity"
-                    value={capacity}
-                    onChange={(e) => setCapacity(e.target.value)}
+                    name="roleDetails"
+                    id="roleDetails"
+                    value={roleDetails}
+                    onChange={(e) => setRoleDetails(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Landfill capacity"
+                    placeholder="Enter role details"
                     required
                   />
                 </div>
-                <div className="col-span-2">
+                <div>
                   <label
-                    htmlFor="coordinate"
+                    htmlFor="roleAssign"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Landfill Coordinate
+                    Role Assign
                   </label>
                   <input
                     type="text"
-                    name="coordinate"
-                    id="coordinate"
-                    value={coordinate}
-                    onChange={(e) => setCoordinate(e.target.value)}
+                    name="roleAssign"
+                    id="roleAssign"
+                    value={roleAssign}
+                    onChange={(e) => setRoleAssign(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Landfill coordinate"
-                    required
-                  />
-                </div>
-                <div className="col-span-2">
-                  <label
-                    htmlFor="operationTimespan"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Landfill Operation Timespan
-                  </label>
-                  <input
-                    type="time"
-                    name="operationTimespan"
-                    id="operationTimespan"
-                    value={operationTimespan}
-                    onChange={(e) => setOperationTimespan(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Landfill Operation Timespan"
-                    required
-                  />
-                </div>
-                <div className="col-span-2">
-                  <label
-                    htmlFor="managers"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Land Managers
-                  </label>
-                  <input
-                    type="text"
-                    name="managers"
-                    id="managers"
-                    value={managers}
-                    onChange={(e) => setManagers(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Landfill managers"
+                    placeholder="Enter role assign"
                     required
                   />
                 </div>
               </div>
               <Button variant="contained" className="w-full" type="submit">
-                Add Landfill
+                {update ? "Update Role" : "Add Role"}
               </Button>
             </form>
           </div>

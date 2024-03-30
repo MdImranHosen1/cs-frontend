@@ -1,32 +1,51 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const getRoles = createAsyncThunk('rbac/roles/getRoles', async () => {
+const getToken = () => {
+    const userDetails = JSON.parse(localStorage.getItem('userDetails'));
+    return userDetails ? userDetails.token : null;
+};
+
+axios.interceptors.request.use(
+    (config) => {
+        const token = getToken();
+        if (token) {
+            config.headers.Authorization = token;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+export const getRoles = createAsyncThunk('roles/getRoles', async () => {
     const response = await axios.get('http://localhost:3000/rbac/roles');
     return response.data;
 });
 
-export const postRole = createAsyncThunk('rbac/roles/postRoles', async (role) => {
-
-    const response = await axios.post('http://localhost:3000/rbac/roles', role);
-
+export const postRole = createAsyncThunk('roles/postRole', async (roleData) => {
+    const response = await axios.post('http://localhost:3000/rbac/roles', roleData);
     return response.data;
 });
 
+export const getRoleById = createAsyncThunk('roles/getRoleById', async (roleId) => {
+    const response = await axios.get(`http://localhost:3000/rbac/roles/${roleId}`);
+    return response.data;
+});
+
+export const updateRole = createAsyncThunk('roles/updateRole', async ({ roleId, roleData }) => {
+    const response = await axios.put(`http://localhost:3000/rbac/roles/${roleId}`, roleData);
+    return response.data;
+});
+
+export const deleteRoleById = createAsyncThunk('roles/deleteRoleById', async (roleId) => {
+    const response = await axios.delete(`http://localhost:3000/rbac/roles/${roleId}`);
+    return response.data;
+});
 
 const initialState = {
-    data: [
-        { "userId": 1, "userType": "Type1", "userName": "user1", "userPassword": "pass123", "userRoles": ["role1", "role2"], "userPhone": "1234567890", "userEmail": "user1@example.com" },
-        { "userId": 2, "userType": "Type2", "userName": "user2", "userPassword": "pass456", "userRoles": ["role2", "role3"], "userPhone": "2345678901", "userEmail": "user2@example.com" },
-        { "userId": 3, "userType": "Type3", "userName": "user3", "userPassword": "pass789", "userRoles": ["role3", "role4"], "userPhone": "3456789012", "userEmail": "user3@example.com" },
-        { "userId": 4, "userType": "Type4", "userName": "user4", "userPassword": "passabc", "userRoles": ["role4", "role5"], "userPhone": "4567890123", "userEmail": "user4@example.com" },
-        { "userId": 5, "userType": "Type5", "userName": "user5", "userPassword": "passxyz", "userRoles": ["role5", "role6"], "userPhone": "5678901234", "userEmail": "user5@example.com" },
-        { "userId": 6, "userType": "Type6", "userName": "user6", "userPassword": "pass123", "userRoles": ["role6", "role7"], "userPhone": "6789012345", "userEmail": "user6@example.com" },
-        { "userId": 7, "userType": "Type7", "userName": "user7", "userPassword": "pass456", "userRoles": ["role7", "role8"], "userPhone": "7890123456", "userEmail": "user7@example.com" },
-        { "userId": 8, "userType": "Type8", "userName": "user8", "userPassword": "pass789", "userRoles": ["role8", "role9"], "userPhone": "8901234567", "userEmail": "user8@example.com" },
-        { "userId": 9, "userType": "Type9", "userName": "user9", "userPassword": "passabc", "userRoles": ["role9", "role10"], "userPhone": "9012345678", "userEmail": "user9@example.com" },
-        { "userId": 10, "userType": "Type10", "userName": "user10", "userPassword": "passxyz", "userRoles": ["role10", "role11"], "userPhone": "0123456789", "userEmail": "user10@example.com" }
-    ],
+    data: [],
     loading: 'idle',
     error: null,
 };
@@ -51,7 +70,7 @@ export const rolesSlice = createSlice({
             .addCase(getRoles.rejected, (state) => {
                 if (state.loading === 'pending') {
                     state.loading = 'idle';
-                    state.error = 'Error occurred';
+                    state.error = 'Error occurred while fetching roles';
                 }
             })
             .addCase(postRole.pending, (state) => {
@@ -63,7 +82,45 @@ export const rolesSlice = createSlice({
             })
             .addCase(postRole.rejected, (state) => {
                 state.loading = 'idle';
-                state.error = 'Error occurred while adding user';
+                state.error = 'Error occurred while adding role';
+            })
+            .addCase(getRoleById.pending, (state) => {
+                state.loading = 'pending';
+            })
+            .addCase(getRoleById.fulfilled, (state, action) => {
+                state.data = [action.payload]; // Assuming single role data
+                state.loading = 'idle';
+            })
+            .addCase(getRoleById.rejected, (state) => {
+                state.loading = 'idle';
+                state.error = 'Error occurred while fetching role';
+            })
+            .addCase(updateRole.pending, (state) => {
+                state.loading = 'pending';
+            })
+            .addCase(updateRole.fulfilled, (state, action) => {
+                const updatedRole = action.payload;
+                const index = state.data.findIndex(role => role.id === updatedRole.id);
+                if (index !== -1) {
+                    state.data[index] = updatedRole;
+                }
+                state.loading = 'idle';
+            })
+            .addCase(updateRole.rejected, (state) => {
+                state.loading = 'idle';
+                state.error = 'Error occurred while updating role';
+            })
+            .addCase(deleteRoleById.pending, (state) => {
+                state.loading = 'pending';
+            })
+            .addCase(deleteRoleById.fulfilled, (state, action) => {
+                const roleId = action.payload;
+                state.data = state.data.filter(role => role.id !== roleId);
+                state.loading = 'idle';
+            })
+            .addCase(deleteRoleById.rejected, (state) => {
+                state.loading = 'idle';
+                state.error = 'Error occurred while deleting role';
             });
     },
 });

@@ -21,6 +21,7 @@ import { PermissionsPage } from "./pages/permissions/PermissionsPage";
 import { PermissionDetailsPage } from './pages/permissions/PermissionDetailsPage';
 import { RolesPage } from './pages/roles/RolesPage';
 import RolesAssignPermissionPage from './pages/roles/RolesAssignPermissionPage';
+import { RoleDetailsPage } from "./pages/roles/RoleDetailesPage";
 
 
 function App() {
@@ -70,6 +71,7 @@ function App() {
 
         {/* role */}
         <Route exact path="/rbac/roles" element={<RolesPage />} />
+        <Route exact path="/rbac/roles/:id" element={<RoleDetailsPage />} />
         <Route exact path="/rbac/roles/:id/permissions" element={<RolesAssignPermissionPage />} />
 
 
