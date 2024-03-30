@@ -7,6 +7,7 @@ import landfillReducer from './slices/landfullSlice';
 
 import permissionsReducer from './slices/permissionSlice';
 import rolesReducer from './slices/rolesSlice';
+import transactionReducer from './slices/transactionsSlice'
 
 
 
@@ -19,5 +20,6 @@ export default configureStore({
         landfill: landfillReducer,
         permissions: permissionsReducer,
         roles: rolesReducer,
+        transactions: transactionReducer,
     },
 })

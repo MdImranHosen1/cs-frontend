@@ -36,8 +36,10 @@ export const RoleForm = ({ update = 0, data = {} }) => {
       setRoleAssign("");
     } else if (update === 1) {
       dispatch(updateRole({ roleId: data._id, roleData: roleData }));
+      window.location.reload(); 
     }
     toggleAddView();
+    
   };
 
   return (
@@ -129,7 +131,7 @@ export const RoleForm = ({ update = 0, data = {} }) => {
                   >
                     Role Details
                   </label>
-                  <input
+                  <textarea
                     type="text"
                     name="roleDetails"
                     id="roleDetails"

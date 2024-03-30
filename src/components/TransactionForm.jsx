@@ -1,81 +1,90 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { postSts, updateSts } from "../../redux/slices/stsSlice";
+import { useDispatch, useSelector } from "react-redux";
+
 import UpdateIcon from "@mui/icons-material/Update";
 import AddRoadTwoToneIcon from "@mui/icons-material/AddRoadTwoTone";
+import {
+  postTransaction,
+  updateTransaction,
+} from "../redux/slices/transactionsSlice";
 
-export const StsForm = ({ update = 0, data = {} }) => {
-  const [viewStsModel, setViewStsModel] = useState(false);
+export const TransactionForm = ({ update = 0, data = {} }) => {
+  console.log("userDAta ", data);
+  const [viewUserModel, setViewUserModel] = useState(false);
+
   const dispatch = useDispatch();
-  const [stsName, setStsName] = useState(update ? data?.stsName : "");
-  const [stsNum, setStsNum] = useState(update ? data?.stsNum : "");
-  const [wardNum, setWardNum] = useState(update ? data?.wardNum : "");
-  const [capacity, setCapacity] = useState(update ? data?.capacity : "");
-  const [coordinate, setCoordinate] = useState(update ? data?.coordinate : "");
-  const [managers, setManagers] = useState(
-    update ? data?.managers.join(", ") : ""
+  const [stsNum, setStsNum] = useState(data?.stsNum);
+  const [lfNum, setLfNum] = useState(update ? data?.lfNum : "");
+  const [vehRegNum, setVehRegNum] = useState(update ? data?.vehRegNum : "");
+  const [weightWaste, setWeightWaste] = useState(
+    update ? data?.weightWaste : ""
+  );
+  const [arrivalTime, setArrivalTime] = useState(
+    update ? data?.arrivalTime : ""
+  );
+  const [departureTime, setDepartureTime] = useState(
+    update ? data?.departureTime : ""
+  );
+  const [travelDistance, setTravelDistance] = useState(
+    update ? data?.travelDistance : ""
   );
 
   const toggleAddView = () => {
-    setViewStsModel(!viewStsModel);
+    document.body.style.overflow = viewUserModel ? "auto" : "hidden";
+    setViewUserModel(!viewUserModel);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const stsData = {
-      stsName: stsName,
+    const transactionData = {
       stsNum: stsNum,
-      wardNum: wardNum,
-      capacity: capacity,
-      coordinate: coordinate,
-      managers: [managers],
+      lfNum: lfNum,
+      vehRegNum: vehRegNum,
+      weightWaste: weightWaste,
+      arrivalTime: arrivalTime,
+      departureTime: departureTime,
+      travelDistance: travelDistance,
     };
-
+    console.log("transactionData", transactionData);
     if (update === 0) {
-      dispatch(postSts(stsData));
-      setStsName("");
-      setStsNum("");
-      setWardNum("");
-      setCapacity("");
-      setCoordinate("");
-      setManagers("");
-    } else if (update === 1) {
-      dispatch(updateSts({ stsId: data._id, stsData: stsData }));
-    }
+      dispatch(postTransaction(transactionData));
 
+      console.log(transactionData);
+
+      //   setLfNum("");
+      //   setVehRegNum("");
+      //   setWeightWaste("");
+      //   setArrivalTime("");
+      //   setDepartureTime("");
+      //   setTravelDistance("");
+    } else if (update === 1) {
+      dispatch(
+        updateTransaction({
+          transactionId: data._id,
+          transactionData: transactionData,
+        })
+      );
+    }
     toggleAddView();
   };
 
   return (
     <div>
-      <div className="fixed w-1/4 ">
-        {update ? (
-          <>
-            <Button
-              variant="contained"
-              startIcon={<UpdateIcon />}
-              className="w-auto"
-              onClick={toggleAddView}
-            >
-              Update STS
-            </Button>
-          </>
-        ) : (
-          <Button
-            variant="contained"
-            className="w-full"
-            startIcon={<AddRoadTwoToneIcon />}
-            onClick={toggleAddView}
-          >
-            Add STS
-          </Button>
-        )}
+      <div className="">
+        <Button
+          variant="contained"
+          className="w-full"
+          startIcon={<AddRoadTwoToneIcon />}
+          onClick={toggleAddView}
+        >
+          Add Transaction
+        </Button>
       </div>
 
-      {viewStsModel && (
-        <div className="z-20 fixed top-0 right-0 bottom-0 left-0 z-100 flex justify-center items-center bg-gray-800 bg-opacity-50">
+      {viewUserModel && (
+        <div className="z-20  fixed top-0 right-0 bottom-0 left-0 z-100 flex justify-center items-center bg-gray-800 bg-opacity-50">
           <div
             style={{
               maxHeight: "calc(100vh - 20px)",
@@ -83,11 +92,11 @@ export const StsForm = ({ update = 0, data = {} }) => {
               width: "80%",
               maxWidth: "800px",
             }}
-            className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md"
+            className=" bg-white rounded-lg shadow-lg p-6 max-h-full overflow-y-auto "
           >
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-gray-900">
-                Add new STS
+                {update ? "Update Transaction" : "Add New Transaction"}
               </h3>
               <button
                 type="button"
@@ -116,110 +125,107 @@ export const StsForm = ({ update = 0, data = {} }) => {
               <div className="grid gap-4 mb-4 grid-cols-2">
                 <div className="col-span-2">
                   <label
-                    htmlFor="stsName"
+                    htmlFor="lfNum"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    STS Name
-                  </label>
-                  <input
-                    type="text"
-                    name="stsName"
-                    id="stsName"
-                    value={stsName}
-                    onChange={(e) => setStsName(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Type STS name"
-                    required
-                  />
-                </div>
-                <div className="col-span-2">
-                  <label
-                    htmlFor="stsNum"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    STS Number
+                    LF Number
                   </label>
                   <input
                     type="number"
-                    name="stsNum"
-                    id="stsNum"
-                    value={stsNum}
-                    onChange={(e) => setStsNum(e.target.value)}
+                    name="lfNum"
+                    id="lfNum"
+                    value={lfNum}
+                    onChange={(e) => setLfNum(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Type STS number"
+                    placeholder="Enter LF number"
                     required
                   />
                 </div>
                 <div className="col-span-2">
                   <label
-                    htmlFor="wardNum"
+                    htmlFor="vehRegNum"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Ward Number
+                    Vehicle Registration Number
                   </label>
                   <input
                     type="text"
-                    name="wardNum"
-                    id="wardNum"
-                    value={wardNum}
-                    onChange={(e) => setWardNum(e.target.value)}
+                    name="vehRegNum"
+                    id="vehRegNum"
+                    value={vehRegNum}
+                    onChange={(e) => setVehRegNum(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Type ward number"
+                    placeholder="Enter vehicle registration number"
                     required
                   />
                 </div>
                 <div className="col-span-2">
                   <label
-                    htmlFor="capacity"
+                    htmlFor="weightWaste"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    STS Capacity
+                    Weight of Waste
                   </label>
                   <input
-                    type="text"
-                    name="capacity"
-                    id="capacity"
-                    value={capacity}
-                    onChange={(e) => setCapacity(e.target.value)}
+                    type="number"
+                    name="weightWaste"
+                    id="weightWaste"
+                    value={weightWaste}
+                    onChange={(e) => setWeightWaste(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Type STS capacity"
+                    placeholder="Enter weight of waste"
                     required
                   />
                 </div>
                 <div className="col-span-2">
                   <label
-                    htmlFor="coordinate"
+                    htmlFor="arrivalTime"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    STS Coordinate
+                    Arrival Time
                   </label>
                   <input
-                    type="text"
-                    name="coordinate"
-                    id="coordinate"
-                    value={coordinate}
-                    onChange={(e) => setCoordinate(e.target.value)}
+                    type="datetime-local"
+                    name="arrivalTime"
+                    id="arrivalTime"
+                    value={arrivalTime}
+                    onChange={(e) => setArrivalTime(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Type STS coordinate"
                     required
                   />
                 </div>
-
                 <div className="col-span-2">
                   <label
-                    htmlFor="managers"
+                    htmlFor="departureTime"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    STS Managers
+                    Departure Time
                   </label>
                   <input
-                    type="text"
-                    name="managers"
-                    id="managers"
-                    value={managers}
-                    onChange={(e) => setManagers(e.target.value)}
+                    type="datetime-local"
+                    name="departureTime"
+                    id="departureTime"
+                    value={departureTime}
+                    onChange={(e) => setDepartureTime(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Type STS managers"
+                    required
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label
+                    htmlFor="travelDistance"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
+                    Travel Distance
+                  </label>
+                  <input
+                    type="number"
+                    name="travelDistance"
+                    id="travelDistance"
+                    value={travelDistance}
+                    onChange={(e) => setTravelDistance(e.target.value)}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                    placeholder="Enter travel distance"
                     required
                   />
                 </div>
@@ -227,10 +233,9 @@ export const StsForm = ({ update = 0, data = {} }) => {
               <Button
                 variant="contained"
                 className="w-full"
-                type="submit"
-                onSubmit={handleSubmit}
+                onClick={handleSubmit}
               >
-                {update ? "Update STS" : "Add STS"}
+                {update ? "Update Transaction" : "Add Transaction"}
               </Button>
             </form>
           </div>

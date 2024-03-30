@@ -11,6 +11,9 @@ import { deleteRoleById, getRoleById } from "../../redux/slices/rolesSlice";
 import { RoleForm } from "./RolesForm";
 
 export const RoleDetailsPage = () => {
+  
+
+
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -34,7 +37,8 @@ export const RoleDetailsPage = () => {
     const isConfirmed = window.confirm("Do you want to delete the role?");
     if (isConfirmed) {
       dispatch(deleteRoleById(id)).then(() => {
-        navigate("/roles");
+        navigate("/rbac/roles");
+        window.location.reload(); 
       });
     }
   };

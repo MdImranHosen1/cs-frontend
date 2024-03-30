@@ -36,6 +36,7 @@ export const StsDetailsPage = () => {
     if (isConfirmed) {
       dispatch(deleteStsById(id)).then(() => {
         navigate("/sts");
+        window.location.reload();
       });
     }
   };

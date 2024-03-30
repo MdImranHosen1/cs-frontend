@@ -19,12 +19,13 @@ export const PermissionDetailsPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const data = useSelector((state) => state.permissions.data[0]);
-
+  
 
   useEffect(() => {
     dispatch(getPermissionById(id));
   }, [dispatch, id]);
+  
+  const data = useSelector((state) => state.permissions.data[0]);
 
   if (!data) {
     return (
@@ -40,36 +41,31 @@ export const PermissionDetailsPage = () => {
     const isConfirmed = window.confirm("Do you want to delete the vehicles?");
     if (isConfirmed) {
       dispatch(deletePermissionById(id)).then(() => {
-        navigate("/vehicles");
+        navigate("/rbac/permissions");
       });
     }
   };
 
   return (
     <div className=" flex w-full p-10 h-full ">
-      
       <div className=" p-5">
         <h1 className=" font-bold text-2xl ml-5">About </h1>
         <div className="pl-6  ">
           <b>
-            <h1 className="mb-1">Capacity: {data.capacity}</h1>
-            <h4 className="mb-1">Cost Loaded: {data.costLoaded}</h4>
-            <h4 className="mb-1">Cost Unloaded: {data.costUnloaded}</h4>
-            <h4 className="mb-1">Registration Number: {data.regNum}</h4>
-            <h4 className="mb-1">Status ID: {data.stsID}</h4>
-            <h4 className="mb-1">Type: {data.type}</h4>
+            <h1 className="mb-1">Name : {data.name}</h1>
+            <h4 className="mb-1">Details: {data.details}</h4>
           </b>
 
           <PermissionForm update={1} data={data} />
 
-          <div className=" ml-48">
+          <div className=" mt-14 w-64">
             <Button
               variant="contained"
               color="error"
               onClick={onDeleteData}
               startIcon={<DeleteForeverOutlinedIcon />}
             >
-              Delete Vehicles
+              Delete Permission
             </Button>
           </div>
         </div>

@@ -39,12 +39,12 @@ export const LandfillForm = ({ update = 0, data = {} }) => {
     if (update === 0) {
       console.log("landfillData",landfillData)
       dispatch(postLandfill(landfillData));
-      setLfId("");
-      setName("");
-      setCapacity("");
-      setCoordinate("");
-      setOperationTimespan("");
-      setManagerId("");
+      // setLfId("");
+      // setName("");
+      // setCapacity("");
+      // setCoordinate("");
+      // setOperationTimespan("");
+      // setManagerId("");
     } else if (update === 1) {
       dispatch(
         updateLandfill({ landfillId: data._id, landfillData: landfillData })

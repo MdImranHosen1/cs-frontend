@@ -17,7 +17,7 @@ export const VehicleCard = ({ vehicles }) => {
             <h4 className="mb-1">Type :{vehicles.type}</h4>
             <h4 className="mb-1">Registration Number :{vehicles.regNum}</h4>
             <h4 className="mb-1"> STS number :{vehicles.stsId}</h4>
-            <h4 className="mb-1">Capacity : {vehicles.capacity} Ton</h4>
+            <h4 className="mb-1">Capacity : {vehicles.capacity}</h4>
             <h4 className="mb-1">
               Fuel cost fully loaded :{vehicles.costLoaded} Liter
             </h4>
@@ -25,7 +25,7 @@ export const VehicleCard = ({ vehicles }) => {
               {" "}
               Fuel cost unloaded :{vehicles.costUnloaded} Liter
             </h4>
-            <Link to={`/vehicles/${vehicles._id}`}>
+            <a href={`/vehicles/${vehicles._id}`}>
               <Button
                 variant="contained"
                 className="w-24"
@@ -33,7 +33,7 @@ export const VehicleCard = ({ vehicles }) => {
               >
                 More
               </Button>
-            </Link>
+            </a>
           </b>
         </div>
       </div>

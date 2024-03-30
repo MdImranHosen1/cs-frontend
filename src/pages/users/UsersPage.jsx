@@ -12,7 +12,7 @@ export const UsersPage = () => {
 
   const data = useSelector((state) => state.users);
   const users = data.data;
-  console.log(users);
+
   useEffect(() => {
     dispatch(getUsers());
   }, [dispatch]);
@@ -20,7 +20,7 @@ export const UsersPage = () => {
   return (
     <div className="w-screen flex">
       <div className=" w-1/4 p-5">
-        <UserForm />
+        <UserForm update={0}/>
       </div>
       <div className=" w-3/4 p-5">
         {users.map((value) => {

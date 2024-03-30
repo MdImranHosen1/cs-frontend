@@ -42,6 +42,7 @@ export const VehiclesDetailsPage = () => {
     if (isConfirmed) {
       dispatch(deleteVehicleById(id)).then(() => {
         navigate("/vehicles");
+        window.location.reload();
       });
     }
   };

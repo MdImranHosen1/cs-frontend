@@ -20,27 +20,28 @@ axios.interceptors.request.use(
 );
 
 export const getRoles = createAsyncThunk('roles/getRoles', async () => {
-    const response = await axios.get('http://localhost:3000/rbac/roles');
+    const response = await axios.get('http://localhost:5000/users/roles');
     return response.data;
 });
 
 export const postRole = createAsyncThunk('roles/postRole', async (roleData) => {
-    const response = await axios.post('http://localhost:3000/rbac/roles', roleData);
+    const response = await axios.post('http://localhost:5000/users/rabc/roles', roleData);
     return response.data;
 });
 
 export const getRoleById = createAsyncThunk('roles/getRoleById', async (roleId) => {
-    const response = await axios.get(`http://localhost:3000/rbac/roles/${roleId}`);
+    console.log("roleId", roleId)
+    const response = await axios.get(`http://localhost:5000/users/roles/${roleId}`);
     return response.data;
 });
 
 export const updateRole = createAsyncThunk('roles/updateRole', async ({ roleId, roleData }) => {
-    const response = await axios.put(`http://localhost:3000/rbac/roles/${roleId}`, roleData);
+    const response = await axios.put(`http://localhost:5000/users/roles/${roleId}`, roleData);
     return response.data;
 });
 
 export const deleteRoleById = createAsyncThunk('roles/deleteRoleById', async (roleId) => {
-    const response = await axios.delete(`http://localhost:3000/rbac/roles/${roleId}`);
+    const response = await axios.delete(`http://localhost:5000/users/roles/${roleId}`);
     return response.data;
 });
 

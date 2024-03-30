@@ -5,9 +5,6 @@ import ReadMoreOutlinedIcon from "@mui/icons-material/ReadMoreOutlined";
 import { Button } from "@mui/material";
 
 export default function UserCard({ users }) {
-
- 
-  
   return (
     <div class="  flex  items-center w-full  bg-white border border-gray-100 rounded-lg shadow   hover:bg-gray-200">
       <img
@@ -23,8 +20,9 @@ export default function UserCard({ users }) {
             <h4 class="mb-1">Phone Number: {users.userPhone}</h4>
             <h4 class="mb-1">Email: {users.userEmail}</h4>
             <h4 class="mb-1">Roles: {users.userRoles}</h4>
+            <h4 className="mb-1">STS/Lanfill :{users.stsOrLandfillNum}</h4>
           </b>
-          <Link to={`/users/${users._id}`}>
+          <a href={`/users/${users._id}`}>
             <Button
               variant="contained"
               className="w-24"
@@ -32,7 +30,7 @@ export default function UserCard({ users }) {
             >
               More
             </Button>
-          </Link>
+          </a>
         </div>
       </div>
     </div>

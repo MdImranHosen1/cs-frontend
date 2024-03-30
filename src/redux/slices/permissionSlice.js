@@ -20,27 +20,27 @@ axios.interceptors.request.use(
 );
 
 export const getPermissions = createAsyncThunk('permissions/getPermissions', async () => {
-    const response = await axios.get('http://localhost:5000/permissions');
+    const response = await axios.get('http://localhost:5000/rabc/permissions');
     return response.data;
 });
 
 export const postPermission = createAsyncThunk('permissions/postPermission', async (permissionData) => {
-    const response = await axios.post('http://localhost:5000/permissions', permissionData);
+    const response = await axios.post('http://localhost:5000/rabc/permissions', permissionData);
     return response.data;
 });
 
 export const getPermissionById = createAsyncThunk('permissions/getPermissionById', async (permissionId) => {
-    const response = await axios.get(`http://localhost:5000/permissions/${permissionId}`);
+    const response = await axios.get(`http://localhost:5000/rabc/permissions/${permissionId}`);
     return response.data;
 });
 
 export const updatePermission = createAsyncThunk('permissions/updatePermission', async ({ permissionId, permissionData }) => {
-    const response = await axios.put(`http://localhost:5000/permissions/${permissionId}`, permissionData);
+    const response = await axios.put(`http://localhost:5000/rabc/permissions/${permissionId}`, permissionData);
     return response.data;
 });
 
 export const deletePermissionById = createAsyncThunk('permissions/deletePermissionById', async (permissionId) => {
-    const response = await axios.delete(`http://localhost:5000/permissions/${permissionId}`);
+    const response = await axios.delete(`http://localhost:5000/rabc/permissions/${permissionId}`);
     return response.data;
 });
 

@@ -67,11 +67,11 @@ function App() {
 
         {/* permission */}
         <Route exact path="/rbac/permissions/" element={<PermissionsPage />} />
-        <Route exact path="/rbac/permissions/:id" element={<PermissionDetailsPage />} />
+        <Route exact path="/rabc/permissions/:id" element={<PermissionDetailsPage />} />
 
         {/* role */}
         <Route exact path="/rbac/roles" element={<RolesPage />} />
-        <Route exact path="/rbac/roles/:id" element={<RoleDetailsPage />} />
+        <Route exact path="/users/roles/:id" element={<RoleDetailsPage />} />
         <Route exact path="/rbac/roles/:id/permissions" element={<RolesAssignPermissionPage />} />
 
 

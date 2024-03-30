@@ -47,6 +47,7 @@ export const VehiclesForm = ({ update = 0, data = {} }) => {
       dispatch(
         updateVehicle({ vehicleId: data._id, vehicleData: vehicleData })
       );
+      window.location.reload();
     }
     toggleAddView();
   };
@@ -169,10 +170,10 @@ export const VehiclesForm = ({ update = 0, data = {} }) => {
                     onChange={(e) => setCapacity(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                   >
-                    <option value="3 ton">3 ton</option>
-                    <option value="5 ton">5 ton</option>
-                    <option value="7 ton">7 ton</option>
-                    <option value="15 ton">15 ton</option>
+                    <option value="3 Ton">3 Ton</option>
+                    <option value="5 Ton">5 Ton</option>
+                    <option value="7 Ton">7 Ton</option>
+                    <option value="15 Ton">15 Ton</option>
                   </select>
                 </div>
                 <div className="col-span-2">

@@ -12,12 +12,20 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/slices/userHandleSlice";
 
-let pages = ["Users", "Vehicles", "STS", "Landfill", "Roles", "Permissions"];
+let pages = [
+  "Users",
+  "Vehicles",
+  "STS",
+  "Landfill",
+  "Roles",
+  "Permissions",
+  "Statistics",
+];
 let pagesLink = [
   "/users",
   "/vehicles",
@@ -25,6 +33,7 @@ let pagesLink = [
   "/landfills",
   "/rbac/roles",
   "/rbac/permissions",
+  "/statistics",
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -34,7 +43,7 @@ export const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [userValid, setUserValid] = React.useState(false);
   const [userType, setUserType] = React.useState(false);
-
+  const navigate = useNavigate();
 
   const userValidity = useSelector(
     (state) => state.userType?.userData?.userType
@@ -62,6 +71,7 @@ export const Navbar = () => {
     console.log(setting);
     if (setting === "Logout") {
       dispatch(logout());
+      navigate(`/`);
       window.location.reload(true);
     }
     setAnchorElUser(null);
