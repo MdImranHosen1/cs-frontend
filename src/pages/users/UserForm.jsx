@@ -6,7 +6,7 @@ import UpdateIcon from "@mui/icons-material/Update";
 import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
 
 export const UserForm = ({ update = 0, user = {} }) => {
-  console.log(user, update);
+
   const [viewUserModel, setViewUserModel] = useState(false);
   const dispatch = useDispatch();
   const [name, setName] = useState(update ? user?.userName : "");

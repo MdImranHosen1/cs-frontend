@@ -6,7 +6,7 @@ import { Button } from "@mui/material";
 import MyMap from "../../components/MyMap";
 
 export default function StsCard({ sts }) {
-  console.log(sts);
+  console.log("sts",sts);
   return (
     <div class="  flex  items-center w-full  bg-white border border-gray-100 rounded-lg shadow   hover:bg-gray-200">
       {/* <img src={img} alt="Photo" /> */}
@@ -18,12 +18,18 @@ export default function StsCard({ sts }) {
         <div class="p-5">
           <b>
             <h1 class="mb-1">Name: {sts.stsName}</h1>
-            <h4 class="mb-1">Type: {sts.wardNum}</h4>
-            <h4 class="mb-1">Phone Number: {sts.capacity}</h4>
-            <h4 class="mb-1">Email: {sts.coordinate}</h4>
-            <h4 class="mb-1">Roles: {sts.managers}</h4>
+            <h4 class="mb-1">Ward Number: {sts.wardNum}</h4>
+            <h4 class="mb-1">Capacity: {sts.capacity}</h4>
+            <h4 class="mb-1">Coordinate: {sts.coordinate}</h4>
+            <h4 class="mb-1">Managers:</h4>
+            <ul>
+              {sts.managers.map((manager, index) => (
+                <li key={index}>{manager}</li>
+              ))}
+            </ul>
           </b>
-          <Link to={`/sts/${sts.id}`}>
+
+          <Link to={`/sts/${sts._id}`}>
             <Button
               variant="contained"
               className="w-24"

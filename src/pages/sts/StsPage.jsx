@@ -25,7 +25,7 @@ export const StsPage = () => {
         {sts.map((value) => {
           return (
             <div className=" w-full mb-1 pr-3">
-              <StsCard sts={value} />;
+              <StsCard sts={value} />
             </div>
           );
         })}

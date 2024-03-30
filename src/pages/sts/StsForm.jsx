@@ -1,53 +1,78 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { postSts } from "../../redux/slices/stsSlice";
+import { postSts, updateSts } from "../../redux/slices/stsSlice";
+import UpdateIcon from "@mui/icons-material/Update";
+import AddRoadTwoToneIcon from "@mui/icons-material/AddRoadTwoTone";
 
-export const StsForm = () => {
+export const StsForm = ({ update = 0, data = {} }) => {
+
+
   const [viewStsModel, setViewStsModel] = useState(false);
   const dispatch = useDispatch();
-  const [stsName, setStsName] = useState("");
-  const [wardNum, setWardNum] = useState("");
-  const [capacity, setCapacity] = useState("");
-  const [coordinate, setCoordinate] = useState("");
-  const [managers, setManagers] = useState("");
+  const [stsName, setStsName] = useState(update ? data?.stsName : "");
+  const [wardNum, setWardNum] = useState(update ? data?.wardNum : "");
+  const [capacity, setCapacity] = useState(update ? data?.capacity : "");
+  const [coordinate, setCoordinate] = useState(update ? data?.coordinate : "");
+  const [managers, setManagers] = useState(
+    update ? data?.managers.join(", ") : ""
+  );
 
-  const toggleAddStsView = () => {
-    setViewStsModel(!viewStsModel);
-  };
+   const toggleAddView = () => {
+     setViewStsModel(!viewStsModel);
+   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+   const handleSubmit = (event) => {
+     event.preventDefault();
 
-    const stsData = {
-      stsName: stsName,
-      wardNum: wardNum,
-      capacity: capacity,
-      coordinate: coordinate,
-      managers: [managers],
-    };
-    console.log(stsData);
+     const stsData = {
+       stsName: stsName,
+       wardNum: wardNum,
+       capacity: capacity,
+       coordinate: coordinate,
+       managers: [managers],
+     };
 
-    dispatch(postSts(stsData));
+     if (update === 0) {
+       dispatch(postSts(stsData));
+       setStsName("");
+       setWardNum("");
+       setCapacity("");
+       setCoordinate("");
+       setManagers("");
+     } else if (update === 1) {
+      console.log({ stsId: data._id, stsData: stsData });
+       dispatch(updateSts({ stsId: data._id, stsData: stsData }));
+     }
 
-    setStsName("");
-    setWardNum("");
-    setCapacity("");
-    setCoordinate("");
-    setManagers("");
-    toggleAddStsView();
-  };
+     
+     toggleAddView();
+   };
 
   return (
     <div>
-      <div className="fixed w-1/4 pr-10">
-        <Button
-          variant="contained"
-          className="w-full"
-          onClick={toggleAddStsView}
-        >
-          Add STS
-        </Button>
+      <div className="fixed ">
+        {update ? (
+          <>
+            <Button
+              variant="contained"
+              startIcon={<UpdateIcon />}
+              className="w-auto"
+              onClick={toggleAddView}
+            >
+              Update STS
+            </Button>
+          </>
+        ) : (
+          <Button
+            variant="contained"
+            className="w-full"
+            startIcon={<AddRoadTwoToneIcon />}
+            onClick={toggleAddView}
+          >
+            Add STS
+          </Button>
+        )}
       </div>
 
       {viewStsModel && (
@@ -68,7 +93,7 @@ export const StsForm = () => {
               <button
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8"
-                onClick={toggleAddStsView}
+                onClick={toggleAddView}
               >
                 <svg
                   className="w-3 h-3"
@@ -182,8 +207,13 @@ export const StsForm = () => {
                   />
                 </div>
               </div>
-              <Button variant="contained" className="w-full" type="submit">
-                Add STS
+              <Button
+                variant="contained"
+                className="w-full"
+                type="submit"
+                onSubmit={handleSubmit}
+              >
+                {update ? "Update STS" : "Add STS"}
               </Button>
             </form>
           </div>

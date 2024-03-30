@@ -1,6 +1,25 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+const getToken = () => {
+    const userDetails = JSON.parse(localStorage.getItem('userDetails'));
+    return userDetails ? userDetails.token : null;
+};
+
+axios.interceptors.request.use(
+    (config) => {
+        const token = getToken();
+        if (token) {
+            config.headers.Authorization = token;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+
 export const getSts = createAsyncThunk('sts/getSts', async () => {
     const response = await axios.get('http://localhost:5000/sts');
     return response.data;
@@ -14,18 +33,26 @@ export const postSts = createAsyncThunk('sts/postSts', async (userSts) => {
 });
 
 
+
+export const getStsById = createAsyncThunk('sts/getStsById', async (stsId) => {
+    const response = await axios.get(`http://localhost:5000/sts/${stsId}`);
+    return response.data;
+});
+
+export const updateSts = createAsyncThunk('sts/updateSts', async ({ stsId, stsData }) => {
+    const response = await axios.put(`http://localhost:5000/sts/${stsId}`, stsData);
+    return response.data;
+});
+
+export const deleteStsById = createAsyncThunk('sts/deleteStsById', async (stsId) => {
+    const response = await axios.delete(`http://localhost:5000/sts/${stsId}`);
+    return response.data;
+});
+
+
 const initialState = {
     data: [
-        { "id": 1, "wardNum": 101, "capacity": 200, "coordinate": "40.7128° N, 74.0060° W", "managers": ["Manager1", "Manager2"] },
-        { "id": 2, "wardNum": 102, "capacity": 250, "coordinate": "34.0522° N, 118.2437° W", "managers": ["Manager3", "Manager4"] },
-        { "id": 3, "wardNum": 103, "capacity": 180, "coordinate": "41.8781° N, 87.6298° W", "managers": ["Manager5", "Manager6"] },
-        { "id": 4, "wardNum": 104, "capacity": 220, "coordinate": "29.7604° N, 95.3698° W", "managers": ["Manager7", "Manager8"] },
-        { "id": 5, "wardNum": 105, "capacity": 190, "coordinate": "33.4484° N, 112.0740° W", "managers": ["Manager9", "Manager10"] },
-        { "id": 6, "wardNum": 106, "capacity": 210, "coordinate": "37.7749° N, 122.4194° W", "managers": ["Manager11", "Manager12"] },
-        { "id": 7, "wardNum": 107, "capacity": 240, "coordinate": "32.7157° N, 117.1611° W", "managers": ["Manager13", "Manager14"] },
-        { "id": 8, "wardNum": 108, "capacity": 230, "coordinate": "39.7392° N, 104.9903° W", "managers": ["Manager15", "Manager16"] },
-        { "id": 9, "wardNum": 109, "capacity": 270, "coordinate": "45.5051° N, 122.6750° W", "managers": ["Manager17", "Manager18"] },
-        { "id": 10, "wardNum": 110, "capacity": 260, "coordinate": "37.7749° N, 122.4194° W", "managers": ["Manager19", "Manager20"] }
+       
     ],
     loading: 'idle',
     error: null,
@@ -37,6 +64,7 @@ export const stsSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            // Cases for getSts
             .addCase(getSts.pending, (state) => {
                 if (state.loading === 'idle') {
                     state.loading = 'pending';
@@ -54,6 +82,7 @@ export const stsSlice = createSlice({
                     state.error = 'Error occurred';
                 }
             })
+            // Cases for postSts
             .addCase(postSts.pending, (state) => {
                 state.loading = 'pending';
             })
@@ -64,6 +93,47 @@ export const stsSlice = createSlice({
             .addCase(postSts.rejected, (state) => {
                 state.loading = 'idle';
                 state.error = 'Error occurred while adding sts';
+            })
+            // Cases for getStsById
+            .addCase(getStsById.pending, (state) => {
+                state.loading = 'pending';
+            })
+            .addCase(getStsById.fulfilled, (state, action) => {
+                state.data = [action.payload]; // Assuming getStsById returns a single item
+                state.loading = 'idle';
+            })
+            .addCase(getStsById.rejected, (state) => {
+                state.loading = 'idle';
+                state.error = 'Error occurred while fetching sts by id';
+            })
+            // Cases for updateSts
+            .addCase(updateSts.pending, (state) => {
+                state.loading = 'pending';
+            })
+            .addCase(updateSts.fulfilled, (state, action) => {
+                // Update the state with the updated stsData
+                const updatedIndex = state.data.findIndex(sts => sts.id === action.payload.id);
+                if (updatedIndex !== -1) {
+                    state.data[updatedIndex] = action.payload;
+                }
+                state.loading = 'idle';
+            })
+            .addCase(updateSts.rejected, (state) => {
+                state.loading = 'idle';
+                state.error = 'Error occurred while updating sts';
+            })
+            // Cases for deleteStsById
+            .addCase(deleteStsById.pending, (state) => {
+                state.loading = 'pending';
+            })
+            .addCase(deleteStsById.fulfilled, (state, action) => {
+                // Remove the deleted sts from the state
+                state.data = state.data.filter(sts => sts.id !== action.payload.id);
+                state.loading = 'idle';
+            })
+            .addCase(deleteStsById.rejected, (state) => {
+                state.loading = 'idle';
+                state.error = 'Error occurred while deleting sts by id';
             });
     },
 });

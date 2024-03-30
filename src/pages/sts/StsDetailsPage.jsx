@@ -1,73 +1,73 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { Button } from "@mui/material";
-import UpdateIcon from "@mui/icons-material/Update";
 
-import { StsFromVehiclesTrans } from "./StsFromVehiclesTrans";
+import Box from "@mui/material/Box";
+import LinearProgress from "@mui/material/LinearProgress";
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
+import { StsForm } from "./StsForm";
+import { deleteStsById, getStsById } from "../../redux/slices/stsSlice";
 import MyMap from "./../../components/MyMap";
 
 export const StsDetailsPage = () => {
-  const { userId } = useParams();
-  const [user, setUser] = useState({
-    userId: 1,
-    userType: "Type1",
-    userName: "user1",
-    userPassword: "pass123",
-    userRoles: ["role1", "role2"],
-    userPhone: "1234567890",
-    userEmail: "user1@example.com",
-  });
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [viewStsModel, setViewStsModel] = useState(false);
-  const toggleAddStsView = () => {
-    setViewStsModel(!viewStsModel);
+  const data = useSelector((state) => state.sts.data[0]);
+
+  useEffect(() => {
+    dispatch(getStsById(id));
+  }, [dispatch, id]);
+
+  if (!data) {
+    return (
+      <div>
+        <Box sx={{ width: "100%" }}>
+          <LinearProgress />
+        </Box>
+      </div>
+    );
+  }
+
+  const onDeleteData = () => {
+    const isConfirmed = window.confirm("Do you want to delete the sts?");
+    if (isConfirmed) {
+      dispatch(deleteStsById(id)).then(() => {
+        navigate("/sts");
+      });
+    }
   };
 
-  // const getUserData=async()=>{
-  //   const response = await axios.get('http://localhost:5000/users');
-  //   setData(response.data);
-  // }
-
-  // useEffect(() => {
-  //   getUserData();
-  //
-
-  // }, []);
-  console.log(user);
-
   return (
-    <div>
-      <div className=" flex w-full p-10 h-full ">
-        <div className="rounded-md w-1/2 ">
-          <MyMap />
-        </div>
-        <div className=" w-3/4 p-5">
-          <h1 className=" font-bold text-2xl ml-5">About </h1>
-          <div className="p-6  ">
-            <b>
-              <h1 className="mb-1">Name :{user.userName}</h1>
-              <h4 className="mb-1">Type :{user.userType}</h4>
-              <h4 className="mb-1">Phone Number :{user.userPhone}</h4>
-              <h4 className="mb-1">Email : {user.userEmail}</h4>
-              <h4 className="mb-1">Roles :{user.userRoles}</h4>
-            </b>
+    <div className="flex w-full p-10 h-full">
+      <div className="rounded-md w-1/4 p-5 bg-sky-500 h-full">
+        <MyMap />
+      </div>
+      <div className="w-3/4 p-5">
+        <h1 className="font-bold text-2xl ml-5">About</h1>
+        <div className="p-6">
+          <b>
+            <h1 className="mb-1">Name: {data.stsName}</h1>
+            <h4 className="mb-1">Type: {data.wardNum}</h4>
+            <h4 className="mb-1">Capacity: {data.capacity}</h4>
+            <h4 className="mb-1">Coordinate: {data.coordinate}</h4>
+            <h4 className="mb-1">Managers: {data.managers.join(", ")}</h4>
+          </b>
+
+          <StsForm update={1} data={data} />
+
+          <div className="ml-44">
             <Button
               variant="contained"
-              startIcon={<UpdateIcon />}
-              onClick={toggleAddStsView}
+              color="error"
+              onClick={onDeleteData}
+              startIcon={<DeleteForeverOutlinedIcon />}
             >
-              Update STS
+              Delete STS
             </Button>
           </div>
-        </div>
-      </div>
-      <div>
-        <div className=" flex w-full p-10 h-full ">
-          <div className="rounded-md w-1/4 p-5h-full">
-            <StsFromVehiclesTrans />
-          </div>
-          <div className=" w-3/4 p-5"></div>
         </div>
       </div>
     </div>
