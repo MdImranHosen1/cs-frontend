@@ -26,7 +26,7 @@ export const StsForm = ({ update = 0, data = {} }) => {
 
     const stsData = {
       stsName: stsName,
-      stsNum: stsNum,
+      stsNum: stsNum?stsNum:"None",
       wardNum: wardNum,
       capacity: capacity,
       coordinate: coordinate,
@@ -140,7 +140,7 @@ export const StsForm = ({ update = 0, data = {} }) => {
                     STS Number
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     name="stsNum"
                     id="stsNum"
                     value={stsNum}

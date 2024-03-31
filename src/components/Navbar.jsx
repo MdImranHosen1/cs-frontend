@@ -17,15 +17,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/slices/userHandleSlice";
 
-let pages = [
-  "Users",
-  "Vehicles",
-  "STS",
-  "Landfill",
-  "Roles",
-  "Permissions",
-  "Statistics",
-];
+let pages = ["Users", "Vehicles", "STS", "Landfill", "Roles", "Permissions"];
 let pagesLink = [
   "/users",
   "/vehicles",
@@ -33,7 +25,6 @@ let pagesLink = [
   "/landfills",
   "/rbac/roles",
   "/rbac/permissions",
-  "/statistics",
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 

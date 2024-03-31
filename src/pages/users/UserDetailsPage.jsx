@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import profileImg1 from "./../../assets/user.png";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,6 +11,11 @@ import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined
 import Add from "@mui/icons-material/Add";
 import { TransactionForm } from "../../components/TransactionForm";
 import { deleteUserById } from "./../../redux/slices/usersSlice";
+import { getTransactions } from "../../redux/slices/transactionsSlice";
+import TransCard from "./TransCard";
+import { BillsForm } from "../landﬁll/billing/BillsForm";
+import { getBills } from "../../redux/slices/billSlice";
+import BillsCard from "./BillsCard";
 
 export const UserDetailsPage = () => {
   const { userId } = useParams();
@@ -18,14 +23,18 @@ export const UserDetailsPage = () => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.users.data[0]);
+  const tranData = useSelector((state) => state.transactions.data);
+  const billData = useSelector((state) => state.bills.data);
 
   const userType = useSelector((state) => state.userType?.userData?.userType);
 
   useEffect(() => {
     dispatch(getUserById(userId));
+    dispatch(getTransactions());
+    dispatch(getBills());
   }, [dispatch, userId]);
 
-  if (!user) {
+  if (!user || !tranData || !billData) {
     return (
       <div>
         <Box sx={{ width: "100%" }}>
@@ -88,26 +97,55 @@ export const UserDetailsPage = () => {
       </div>
       <div className="p-10">
         {userType === "Landfill Manager" ? (
-          <Button variant="contained" startIcon={<Add />}>
-            Add Bill
-          </Button>
+          <>
+            <BillsForm data={user} />
+            <div className=" mt-5">
+              <div className=" text-4xl text-center m-2 font-bold">
+                Bills List
+              </div>
+              <BillsCard billData={billData} />
+            </div>
+          </>
         ) : (
           ""
         )}
 
         {userType === "STS Manager" ? (
-          <Button
-            variant="contained"
-            onClick={onDeleteUser}
-            startIcon={<Add />}
-          >
-            Add Transaction
-          </Button>
+          <>
+            <TransactionForm data={user} />
+            <div className=" mt-5">
+              <div className=" text-4xl text-center m-2 font-bold">
+                Transactions List
+              </div>
+              <TransCard tranData={tranData} />
+            </div>
+          </>
         ) : (
           ""
         )}
 
-        <TransactionForm data={user} />
+        {userType === "admin" ? (
+          <>
+            <TransactionForm data={user} />
+            <BillsForm data={user} />
+            <div className=" flex w-full p-5">
+              <div className=" mt-5 w-1/2">
+                <div className=" text-4xl text-center m-2 font-bold">
+                  Transactions List
+                </div>
+                <TransCard tranData={tranData} />
+              </div>
+              <div className=" w-1/2 p-5">
+                <div className=" text-4xl text-center m-2 font-bold">
+                  Bills List
+                </div>
+                <BillsCard billData={billData} />
+              </div>
+            </div>
+          </>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

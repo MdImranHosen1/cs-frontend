@@ -24,7 +24,6 @@ export const UserForm = ({ update = 0, user = {} }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    
 
     const userData = {
       userName: name,
@@ -65,7 +64,7 @@ export const UserForm = ({ update = 0, user = {} }) => {
 
   return (
     <div>
-      <div className="fixed w-1/4">
+      <div className="">
         {update ? (
           <Button
             variant="contained"

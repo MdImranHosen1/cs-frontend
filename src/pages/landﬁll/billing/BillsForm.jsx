@@ -1,22 +1,19 @@
+// BillsForm.js
+
 import React, { useState } from "react";
 import { Button } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-
+import { useDispatch } from "react-redux";
 import UpdateIcon from "@mui/icons-material/Update";
 import AddRoadTwoToneIcon from "@mui/icons-material/AddRoadTwoTone";
-import {
-  postTransaction,
-  updateTransaction,
-} from "../redux/slices/transactionsSlice";
+import { postBill, updateBill } from "./../../../redux/slices/billSlice";
 
-export const TransactionForm = ({ update = 0, data = {} }) => {
-  console.log("userDAta ", data);
+export const BillsForm = ({ update = 0, data = {} }) => {
   const [viewUserModel, setViewUserModel] = useState(false);
 
   const dispatch = useDispatch();
-  const [stsNum, setStsNum] = useState(data?.stsNum);
-  const [lfNum, setLfNum] = useState(update ? data?.lfNum : "");
-  const [vehRegNum, setVehRegNum] = useState(update ? data?.vehRegNum : "");
+  const [vtId, setVtId] = useState(update ? data?.vtId : "");
+  const [vId, setVId] = useState(update ? data?.vId : "");
+  const [stsId, setStsId] = useState(update ? data?.stsId : "");
   const [weightWaste, setWeightWaste] = useState(
     update ? data?.weightWaste : ""
   );
@@ -26,8 +23,8 @@ export const TransactionForm = ({ update = 0, data = {} }) => {
   const [departureTime, setDepartureTime] = useState(
     update ? data?.departureTime : ""
   );
-  const [travelDistance, setTravelDistance] = useState(
-    update ? data?.travelDistance : ""
+  const [totalFuelCost, setTotalFuelCost] = useState(
+    update ? data?.totalFuelCost : ""
   );
 
   const toggleAddView = () => {
@@ -38,48 +35,36 @@ export const TransactionForm = ({ update = 0, data = {} }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const transactionData = {
-      stsNum: stsNum,
-      lfNum: lfNum,
-      vehRegNum: vehRegNum,
+    const billData = {
+      vtId: vtId,
+      vId: vId,
+      stsId: stsId,
       weightWaste: weightWaste,
       arrivalTime: arrivalTime,
       departureTime: departureTime,
-      travelDistance: travelDistance,
+      totalFuelCost: totalFuelCost,
     };
-    console.log("transactionData", transactionData);
+
     if (update === 0) {
-      dispatch(postTransaction(transactionData));
-
-      console.log(transactionData);
-
-      //   setLfNum("");
-      //   setVehRegNum("");
-      //   setWeightWaste("");
-      //   setArrivalTime("");
-      //   setDepartureTime("");
-      //   setTravelDistance("");
+      dispatch(postBill(billData));
+      // Reset form fields if needed
     } else if (update === 1) {
-      dispatch(
-        updateTransaction({
-          transactionId: data._id,
-          transactionData: transactionData,
-        })
-      );
+      dispatch(updateBill({ billId: data._id, billData: billData }));
+      // Reset form fields if needed
     }
     toggleAddView();
   };
 
   return (
-    <div className=" flex w-full flex-col ">
-      <div className="w-56 flex  ">
+    <div>
+      <div className=" w-56 mt-5">
         <Button
           variant="contained"
           className="w-full"
           startIcon={<AddRoadTwoToneIcon />}
           onClick={toggleAddView}
         >
-          Add Transaction
+          Add Bill
         </Button>
       </div>
 
@@ -96,7 +81,7 @@ export const TransactionForm = ({ update = 0, data = {} }) => {
           >
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-gray-900">
-                {update ? "Update Transaction" : "Add New Transaction"}
+                {update ? "Update Bill" : "Add New Bill"}
               </h3>
               <button
                 type="button"
@@ -125,37 +110,55 @@ export const TransactionForm = ({ update = 0, data = {} }) => {
               <div className="grid gap-4 mb-4 grid-cols-2">
                 <div className="col-span-2">
                   <label
-                    htmlFor="lfNum"
+                    htmlFor="vtId"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    LF Number
+                    Vehicle Type ID
                   </label>
                   <input
-                    type="number"
-                    name="lfNum"
-                    id="lfNum"
-                    value={lfNum}
-                    onChange={(e) => setLfNum(e.target.value)}
+                    type="text"
+                    name="vtId"
+                    id="vtId"
+                    value={vtId}
+                    onChange={(e) => setVtId(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Enter LF number"
+                    placeholder="Enter vehicle type ID"
                     required
                   />
                 </div>
                 <div className="col-span-2">
                   <label
-                    htmlFor="vehRegNum"
+                    htmlFor="vId"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Vehicle Registration Number
+                    Vehicle ID
                   </label>
                   <input
                     type="text"
-                    name="vehRegNum"
-                    id="vehRegNum"
-                    value={vehRegNum}
-                    onChange={(e) => setVehRegNum(e.target.value)}
+                    name="vId"
+                    id="vId"
+                    value={vId}
+                    onChange={(e) => setVId(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Enter vehicle registration number"
+                    placeholder="Enter vehicle ID"
+                    required
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label
+                    htmlFor="stsId"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
+                    STS ID
+                  </label>
+                  <input
+                    type="text"
+                    name="stsId"
+                    id="stsId"
+                    value={stsId}
+                    onChange={(e) => setStsId(e.target.value)}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                    placeholder="Enter STS ID"
                     required
                   />
                 </div>
@@ -213,29 +216,25 @@ export const TransactionForm = ({ update = 0, data = {} }) => {
                 </div>
                 <div className="col-span-2">
                   <label
-                    htmlFor="travelDistance"
+                    htmlFor="totalFuelCost"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Travel Distance
+                    Total Fuel Cost
                   </label>
                   <input
                     type="number"
-                    name="travelDistance"
-                    id="travelDistance"
-                    value={travelDistance}
-                    onChange={(e) => setTravelDistance(e.target.value)}
+                    name="totalFuelCost"
+                    id="totalFuelCost"
+                    value={totalFuelCost}
+                    onChange={(e) => setTotalFuelCost(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Enter travel distance"
+                    placeholder="Enter total fuel cost"
                     required
                   />
                 </div>
               </div>
-              <Button
-                variant="contained"
-                className="w-full"
-                onClick={handleSubmit}
-              >
-                {update ? "Update Transaction" : "Add Transaction"}
+              <Button variant="contained" className="w-full" type="submit">
+                {update ? "Update Bill" : "Add Bill"}
               </Button>
             </form>
           </div>

@@ -14,6 +14,7 @@ import {
   getVehicleById,
 } from "../../redux/slices/vehiclesSlice";
 
+
 export const VehiclesDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -68,6 +69,7 @@ export const VehiclesDetailsPage = () => {
           </b>
 
           <VehiclesForm update={1} data={data} />
+          
 
           <div className=" ml-48">
             <Button
