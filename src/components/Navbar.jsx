@@ -26,7 +26,7 @@ let pagesLink = [
   "/rbac/roles",
   "/rbac/permissions",
 ];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Profile", "Dashboard", "Logout"];
 
 export const Navbar = () => {
   const dispatch = useDispatch();
@@ -39,6 +39,10 @@ export const Navbar = () => {
   const userValidity = useSelector(
     (state) => state.userType?.userData?.userType
   );
+
+  const userId = useSelector((state) => state.userType?.userData?.id);
+
+  console.log("userId  ", userId);
 
   useEffect(() => {
     if (userValidity) {
@@ -64,7 +68,14 @@ export const Navbar = () => {
       dispatch(logout());
       navigate(`/`);
       window.location.reload(true);
+    } else if (setting === "Dashboard") {
+      navigate(`/dashboard`);
+      window.location.reload(true);
+    } else if (setting === "Profile") {
+      navigate(`/users/${userId}`);
+      window.location.reload(true);
     }
+
     setAnchorElUser(null);
   };
 

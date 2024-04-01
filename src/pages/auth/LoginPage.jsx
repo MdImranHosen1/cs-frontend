@@ -28,14 +28,15 @@ export const LoginPage = () => {
     (state) => state.userType?.userData?.userType
   );
   const userId = useSelector((state) => state.userType?.userData?.id);
+
   useEffect(() => {
     if (userValidity) {
       if (userValidity === "admin") {
         navigate("/");
       } else if (userValidity === "STS Manager") {
-        navigate(`/sts/${userId}`);
+        navigate(`/users/${userId}`);
       } else if (userValidity === "Landfill Manager") {
-        navigate(`/sts/${userId}`);
+        navigate(`/users/${userId}`);
       } else {
         dispatch(logout());
         setWarningMessage("Wrong email or password!");

@@ -11,7 +11,7 @@ export const StsPage = () => {
 
   const data = useSelector((state) => state.sts);
   const sts = data.data;
-  console.log(sts);
+  
   useEffect(() => {
     dispatch(getSts());
   }, [dispatch]);

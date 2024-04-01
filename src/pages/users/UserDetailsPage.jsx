@@ -33,8 +33,9 @@ export const UserDetailsPage = () => {
     dispatch(getTransactions());
     dispatch(getBills());
   }, [dispatch, userId]);
-
-  if (!user || !tranData || !billData) {
+  // console.log("userType",userType);
+  if(!user)
+  {
     return (
       <div>
         <Box sx={{ width: "100%" }}>
@@ -42,6 +43,46 @@ export const UserDetailsPage = () => {
         </Box>
       </div>
     );
+  }
+
+  
+  if (!user) {
+
+    if (userType === 'admin') {
+      if (!user || !tranData || !billData) {
+        return (
+          <div>
+            <Box sx={{ width: "100%" }}>
+              <LinearProgress />
+            </Box>
+          </div>
+        );
+      }
+    }
+    else if (userType === 'STS Manager') {
+      if (!user || !tranData) {
+        return (
+          <div>
+            <Box sx={{ width: "100%" }}>
+              <LinearProgress />
+            </Box>
+          </div>
+        );
+      }
+    }
+    else if (userType === 'Landfill Manager') {
+      if (!user || !billData) {
+        return (
+          <div>
+            <Box sx={{ width: "100%" }}>
+              <LinearProgress />
+            </Box>
+          </div>
+        );
+      }
+    }
+
+
   }
 
   const onDeleteUser = () => {
@@ -54,9 +95,9 @@ export const UserDetailsPage = () => {
     }
   };
 
-  const onAddBill = () => {};
+  const onAddBill = () => { };
 
-  const onAddTransaction = () => {};
+  const onAddTransaction = () => { };
 
   return (
     <div>
@@ -82,7 +123,7 @@ export const UserDetailsPage = () => {
             <UserForm update={1} user={user} />
 
             <div className=" mt-16 w-72">
-              <Button
+{userType==='admin'?<Button
                 variant="contained"
                 className="w-72"
                 color="error"
@@ -90,7 +131,8 @@ export const UserDetailsPage = () => {
                 startIcon={<DeleteForeverOutlinedIcon />}
               >
                 Delete User
-              </Button>
+              </Button>:""}
+              
             </div>
           </div>
         </div>

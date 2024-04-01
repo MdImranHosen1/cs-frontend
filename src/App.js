@@ -22,6 +22,7 @@ import { PermissionDetailsPage } from './pages/permissions/PermissionDetailsPage
 import { RolesPage } from './pages/roles/RolesPage';
 import RolesAssignPermissionPage from './pages/roles/RolesAssignPermissionPage';
 import { RoleDetailsPage } from "./pages/roles/RoleDetailesPage";
+import { Dashboard } from "./pages/dashboard/Dashboard";
 
 
 function App() {
@@ -73,6 +74,9 @@ function App() {
         <Route exact path="/rbac/roles" element={<RolesPage />} />
         <Route exact path="/users/roles/:id" element={<RoleDetailsPage />} />
         <Route exact path="/rbac/roles/:id/permissions" element={<RolesAssignPermissionPage />} />
+
+        {/* Dashboard */}
+        <Route exact path="/dashboard" element={<Dashboard />} />
 
 
       </Routes>
