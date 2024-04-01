@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/slices/userHandleSlice";
 
 let pages = ["Users", "Vehicles", "STS", "Landfill", "Roles", "Permissions"];
+
 let pagesLink = [
   "/users",
   "/vehicles",
